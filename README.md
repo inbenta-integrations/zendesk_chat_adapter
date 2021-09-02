@@ -9,7 +9,7 @@
 * [Dependencies](#dependencies)
  
 ### DESCRIPTION
-This adapter overwrites the way the Inbenta bot starts a chat. Specifically, instead of starting a chat on the standard Hyperchat(Inbenta chat product), it does so with the Zendesk widget.
+This adapter overwrites the way the Inbenta bot starts a chat. Specifically, instead of starting a chat on the standard Hyperchat (Inbenta chat product), it does so with the Zendesk widget.
 This means that when the user wants to start a chat to an agent, the adapter closes the chatbot and loads the Zendesk widget using the [Zopim](https://api.zopim.com/files/meshim/widget/controllers/LiveChatAPI-js.html) and [Zendesk WEB-SDK](https://api.zopim.com/web-sdk/).
 
 You can find a configurated and functional **example of this adapter** in `./example/index.html`.
@@ -79,9 +79,18 @@ As commented before, there is an example in `./example/index.html`. To make it w
 ``` html
 <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=<ACCOUNT_KEY>"> </script>
 ```
-This value should be replaced by the one shown in the **"Check connection"** section on the Zendesk portal. Access is from the user menu and the property is called **"Account key"**.
 
-And set up the inbenta variables related to your chatbot instance.
+To find this value you should go to **Settings -> Widget**, on the Zendesk portal. There you can find a code snippet, copy the **key** value that appears in the script tag:
+
+``` javascript
+<!-- Start of Zendesk Widget script -->
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=<KEY_VALUE>"> </script>
+<!-- End of Zendesk Widget script -->
+```
+
+![widget_image](example/widget_image.png)
+
+And set up the Inbenta variables related to your chatbot instance.
 * inbentaKey: This value can be found in the **Administration > API** section in Backstage and is called the API key.
 * domainKey: This value can be found in the **Administration > API** section in Backstage and is called the Domain key.
 
@@ -89,3 +98,5 @@ And set up the inbenta variables related to your chatbot instance.
 This adapter has been developed:
  * Using the `web-sdk.js` dependency included in the `src/` folder as a **static resource**.
  * Using Chatbot SDK version **1.39.0**
+
+
