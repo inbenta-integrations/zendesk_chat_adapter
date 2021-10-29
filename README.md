@@ -45,6 +45,7 @@ These variables are used in the adapter to send all the user information to the 
 
 ##### Zendesk adapter
 Below is the necessary configuration for the adapter and the definition of the different properties:
+
 ```javascript
 // Zendesk Adapter conf
 zendesk: {
@@ -52,6 +53,7 @@ zendesk: {
       preForm: false,
       getUserInfo: true,
       sendTranscript: true,
+      department: '',
       accountKey: '',
       labels: {
         placeholder: 'We are processing your request, sooner you will be redirected to Zendesk chat.',
@@ -64,6 +66,7 @@ zendesk: {
 * `preForm`(bool): Allows the user to decide if there will be a preform in the Zendesk widget or it will escalate directly. This value must be the same as that defined in the Zendesk widget settings.
 * `getUserInfo`(bool): Allows the user to obtain the information of the user who is in the Inbenta chatbot, this information will be used by Zendesk to identify the user or complete the preform in Zendesk (according to the previous parameter).
 * `sendTranscript`(bool): Allows the user to send the chat transcript from Inbenta to Zendesk widget. This way, the agent in Zendesk can see all the previous conversation mantained with the bot.
+* `department` (string): Optional value. Name of the department to validate the availability of the agents.
 * `accountKey`(string): The account key of your Zendesk application. If it is not present, the adapter will throw an error.
 * `labels`(object):
     * `placeholder`(string): This param is used to show a placeholder while Inbenta is doing the transition between the chatbot and the Zendesk widget.
@@ -75,20 +78,18 @@ The configuration of the widget must be done according to the configuration of t
 This means that if you do not set the widget to have a preform, even if you set the `preForm` property to true, it will not show because the Zendesk settings prevails.
 
 ### EXAMPLE
-As commented before, there is an example in `./example/index.html`. To make it work, you will need to replace the value <ACCOUNT_KEY>:
+As commented before, there is an example in `./example/index.html`. To make it work, you will need to replace the value <KEY>:
 ``` html
-<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=<ACCOUNT_KEY>"> </script>
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=<KEY>"> </script>
 ```
 
 To find this value you should go to **Settings -> Widget**, on the Zendesk portal. There you can find a code snippet, copy the **key** value that appears in the script tag:
 
-``` javascript
-<!-- Start of Zendesk Widget script -->
-<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=<KEY_VALUE>"> </script>
-<!-- End of Zendesk Widget script -->
-```
+![instructions01](example/instructions01.png)
 
-![widget_image](example/widget_image.png)
+Additionally to the `Key` of the previous step, you need to add the `accountKey` (in the javascript Zendesk addapter config). This value can be found in the **"Check connection"** section on the Zendesk portal. Access is from the user menu and the property is called **"Account key"**.
+
+![instructions01](example/instructions02.png)
 
 And set up the Inbenta variables related to your chatbot instance.
 * inbentaKey: This value can be found in the **Administration > API** section in Backstage and is called the API key.

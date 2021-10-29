@@ -9,7 +9,7 @@
     <link rel="icon" href="https://www.inbenta.com/favicon.ico" type="image/x-icon">
     <script type="text/javascript" src="https://sdk.inbenta.io/chatbot/1.39.0/inbenta-chatbot-sdk.js" integrity="sha384-4bvGhEKgDor4DLVY/4FTtNZVKtwX/gjfmyKLUw85nTZYohnmhe8d7lvX1xnfjFyK" crossorigin="anonymous"></script>
     <!-- Import Zendesk adapter -->
-    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=<ACCOUNT_KEY>"> </script>
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=<KEY>"> </script>
     <!-- End of pstestsupport Zendesk Widget script -->
 
     <script type="text/javascript" src="../src/web-sdk.js"></script>
@@ -64,6 +64,7 @@
           preForm: false,
           getUserInfo: true,
           sendTranscript: false,
+          department: '',
           accountKey: '',
           labels: {
             placeholder: 'We are processing your request, sooner you will be redirected to Zendesk chat.',
@@ -76,8 +77,7 @@
 
     // Add adapters
     window.inbApp.sdkConfig.adapters.push(
-      inbentaZendeskAdapter(inbApp.zendesk.zopim, window.zChat),
-      window.SDKNLEscalation2(inbentaPromiseAgentsAvailableTrue)
+      inbentaZendeskAdapter(inbApp.zendesk.zopim, window.zChat)
     );
 
     window.InbentaChatbotSDK.buildWithDomainCredentials(inbApp.sdkAuth, inbApp.sdkConfig);

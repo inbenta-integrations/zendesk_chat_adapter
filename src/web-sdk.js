@@ -64,12 +64,12 @@ t.o = function(e, t) {
 return Object.prototype.hasOwnProperty.call(e, t);
 };
 t.p = "../../bin/";
-return t(t.s = 52);
+return t(t.s = 50);
 }([ function(e, t, n) {
 function i(e, t) {
 var n = {}, i = {}, o = function(t) {
-return !e.nodeType && e != window && e != document || ("FORM" != e.tagName || "submit" != t) && (!h.isCustomEvents && (h.isFF && h.isFF < 9 ? !document.createEvent("event")[t.toUpperCase()] : void 0 === e["on" + t]));
-}, r = function(t, i, r) {
+return !e.nodeType && e != window && e != document || ("FORM" != e.tagName || "submit" != t) && (!d.isCustomEvents && (d.isFF && d.isFF < 9 ? !document.createEvent("event")[t.toUpperCase()] : void 0 === e["on" + t]));
+}, r = function(t, i) {
 if (!t && "function" != typeof i) throw "bad arguments to on / addEventListener";
 if (!(t in n)) {
 n[t] = [];
@@ -80,14 +80,14 @@ return e;
 }, s = function(t) {
 if (!(t in i)) {
 i[t] = function(i) {
-i && (i.stopPropagation || f(i));
+i && (i.stopPropagation || h(i));
 var o, r = n[t], s = r.length, a = !0;
 r._active = !0;
 for (o = 0; o < s; o++) try {
 if (!r[o]) continue;
-!1 === r[o].call(e, h.isCustomEvents && i instanceof h.CustomEvent ? i.detail : i) && (a = !1);
+!1 === r[o].call(e, d.isCustomEvents && i instanceof d.CustomEvent ? i.detail : i) && (a = !1);
 } catch (e) {
-d.fire("error", e);
+f.fire("error", e);
 }
 r._active = !1;
 if (r._dirty) {
@@ -129,7 +129,7 @@ for (var e in i) i.hasOwnProperty(e) && a(e);
 n = i = null;
 }
 }, l = function(t, i) {
-if (!h.isCustomEvents || o(t)) {
+if (!d.isCustomEvents || o(t)) {
 var r = n[t], s = !0;
 if (r && r.length) {
 r._active = !0;
@@ -139,7 +139,7 @@ if (!r[a]) continue;
 u = r[a].call(e, i);
 !1 === u && (s = !1);
 } catch (e) {
-d.fire("error", e);
+f.fire("error", e);
 }
 r._active = !1;
 if (r._dirty) {
@@ -152,20 +152,20 @@ r._dirty = !1;
 }
 return s;
 }
-return e.dispatchEvent(new h.CustomEvent(t, {
+return e.dispatchEvent(new d.CustomEvent(t, {
 bubbles: !1,
 cancelable: !0,
 detail: i
 }));
-}, f = function(e) {
-e.preventDefault = f.preventDefault;
-e.stopPropagation = f.stopPropagation;
+}, h = function(e) {
+e.preventDefault = h.preventDefault;
+e.stopPropagation = h.stopPropagation;
 e.target = e.srcElement;
 };
-f.preventDefault = function() {
+h.preventDefault = function() {
 this.returnValue = !1;
 };
-f.stopPropagation = function() {
+h.stopPropagation = function() {
 this.cancelBubble = !0;
 };
 var p = {
@@ -176,7 +176,7 @@ unextendEvents: u
 };
 if (t) return p;
 for (var m in p) p.hasOwnProperty(m) && (e[m] = p[m]);
-h.bugs.leaksMemory && h.bugs.leaksMemory(function() {
+d.bugs.leaksMemory && d.bugs.leaksMemory(function() {
 for (var t in p) p.hasOwnProperty(t) && (e[t] = null);
 });
 return e;
@@ -191,22 +191,22 @@ function s(e) {
 a(2, e);
 }
 function a(e, t) {
-e <= f ? t() : p[e].push(t);
+e <= h ? t() : p[e].push(t);
 }
 function c(e) {
-for (;f < e; ) {
-f++;
-for (var t = 0; t < p[f].length; t++) p[f][t]();
-p[f] = null;
+for (;h < e; ) {
+h++;
+for (var t = 0; t < p[h].length; t++) p[h][t]();
+p[h] = null;
 }
 }
 function u() {
-f > 0 || (document.body && document.body.firstChild ? c(1) : window.setTimeout(u, 200));
+h > 0 || (document.body && document.body.firstChild ? c(1) : window.setTimeout(u, 200));
 }
 function l() {
 c(2);
 }
-var h = n(3), d = {
+var d = n(2), f = {
 extend: i,
 body: i(document.body, !0),
 window: i(window, !0),
@@ -215,17 +215,17 @@ runAfterScriptReady: o,
 runAfterFirstChildReady: r,
 runAfterDomReady: s
 };
-d.extend(d);
-var f = 0, p = [ [], [], [], [] ];
+f.extend(f);
+var h = 0, p = [ [], [], [], [] ];
 u();
 !function() {
 var e;
-if (h.isSafari) e = window.setInterval(function() {
+if (d.isSafari) e = window.setInterval(function() {
 if (/loaded|complete/i.test(document.readyState)) {
 window.clearInterval(e);
 l();
 }
-}, 20); else if (document.addEventListener) /loaded|complete/i.test(document.readyState) ? l() : document.addEventListener("DOMContentLoaded", l, !1); else if (h.isIE) {
+}, 20); else if (document.addEventListener) /loaded|complete/i.test(document.readyState) ? l() : document.addEventListener("DOMContentLoaded", l, !1); else if (d.isIE) {
 window.attachEvent("onload", l);
 var t = document.createElement("document:ready");
 e = window.setInterval(function() {
@@ -246,7 +246,7 @@ l();
 }, 200);
 }
 }();
-e.exports = d;
+e.exports = f;
 }, function(e, t) {
 var n = function(e) {
 return function(e, t) {
@@ -254,13 +254,8 @@ return t ? null == e : void 0 === e;
 };
 }();
 e.exports = n;
-}, function(e, t) {
-function n(e) {
-return "function" == typeof e;
-}
-e.exports = n;
 }, function(e, t, n) {
-var i = (n(9), n(26)), o = (n(2), n(1)), r = function() {
+function i() {
 function e(e) {
 return e.replace(/^http:/, N ? "https:" : "http:");
 }
@@ -276,8 +271,8 @@ if (document.documentElement) return document.documentElement.offsetWidth;
 var e = document.getElementsByTagName("body");
 return e.length ? e[0].clientWidth : 0;
 }
-function r() {
-if (!o(s)) return s;
+function i() {
+if (!r(s)) return s;
 var e = document.createElement("div"), t = document.createElement("div"), n = e.style, i = t.style;
 n.overflow = "auto";
 n.width = n.height = "100px";
@@ -291,18 +286,18 @@ s = e.offsetWidth - e.clientWidth;
 document.body.removeChild(e);
 return s;
 }
-var s, a, c = navigator, u = c.userAgent.toLowerCase(), l = +(/trident.*rv:? *([0-9]+)/.exec(u) || [])[1] || !1, h = function() {
+var s, a, c = navigator, u = c.userAgent.toLowerCase(), l = +(/trident.*rv:? *([0-9]+)/.exec(u) || [])[1] || !1, d = function() {
 for (var e = 3, t = document.createElement("div"), n = t.getElementsByTagName("i"); t.innerHTML = "<!--[if gt IE " + ++e + "]><i></i><![endif]-->", 
 n[0]; ) ;
 return e > 4 ? e : document.documentMode;
-}(), d = 8 === h, f = 7 === h, p = 6 === h, m = !!window.opera && "[object Opera]" === Object.prototype.toString.call(window.opera), g = u.indexOf("edge") > -1, _ = "Google Inc." === c.vendor, v = "Apple Computer, Inc." === c.vendor, y = !g && !h && !m && (_ || v || /webkit|khtml/.test(u)), w = +/\d+/.exec(/firefox\/\d+/i.exec(c.userAgent) || ""), b = -1 !== u.indexOf("iphone"), $ = -1 !== u.indexOf("ipod"), E = -1 !== u.indexOf("ipad"), T = b || E || $, k = -1 !== u.indexOf("android"), A = -1 !== u.indexOf("wp7"), L = T || k || A, O = h && "msie" || w && "firefox" || m && "opera" || _ && "chrome" || v && "safari", x = "CSS1Compat" === document.compatMode, S = !x, D = h && S && document.documentElement && !!document.documentElement.style.setExpression, R = document.documentMode || h, C = -1 !== u.indexOf("windows") || -1 !== u.indexOf("win32"), I = -1 !== u.indexOf("macintosh") || -1 !== u.indexOf("mac os x"), N = "https:" === document.location.protocol, P = c.language || c.browserLanguage || c.userLanguage || c.systemLanguage, M = {
-noBoxSizing: R <= 7,
+}(), f = 8 === d, h = 7 === d, p = 6 === d, m = !!window.opera && "[object Opera]" === Object.prototype.toString.call(window.opera), g = u.indexOf("edge") > -1, _ = "Google Inc." === c.vendor, v = "Apple Computer, Inc." === c.vendor, y = !g && !d && !m && (_ || v || /webkit|khtml/.test(u)), w = +/\d+/.exec(/firefox\/\d+/i.exec(c.userAgent) || ""), b = -1 !== u.indexOf("iphone"), $ = -1 !== u.indexOf("ipod"), E = -1 !== u.indexOf("ipad"), k = b || E || $, T = -1 !== u.indexOf("android"), O = -1 !== u.indexOf("wp7"), L = k || T || O, x = d && "msie" || w && "firefox" || m && "opera" || _ && "chrome" || v && "safari", A = "CSS1Compat" === document.compatMode, I = !A, R = d && I && document.documentElement && !!document.documentElement.style.setExpression, C = document.documentMode || d, S = -1 !== u.indexOf("windows") || -1 !== u.indexOf("win32"), D = -1 !== u.indexOf("macintosh") || -1 !== u.indexOf("mac os x"), N = "https:" === document.location.protocol, P = c.language || c.browserLanguage || c.userLanguage || c.systemLanguage, M = {
+noBoxSizing: C <= 7,
 ie: {
 cssBottomRight: p,
-cssFixed: p || D,
-buggyCSS: p || D
+cssFixed: p || R,
+buggyCSS: p || R
 }
-}, U = "textContent" in document.createElement("div"), V = !1, j = null;
+}, V = "textContent" in document.createElement("div"), j = !1, U = null;
 try {
 if (window.CustomEvent && /\[native code\]|\[object CustomEventConstructor\]/.test(window.CustomEvent.toString())) {
 new window.CustomEvent("testevent", {
@@ -310,82 +305,82 @@ bubbles: !1,
 cancelable: !0,
 detail: !0
 });
-V = !0;
-j = window.CustomEvent;
+j = !0;
+U = window.CustomEvent;
 }
 } catch (e) {}
-switch (O) {
+switch (x) {
 case "msie":
 case "firefox":
 case "chrome":
-a = +/\d+/.exec(new RegExp(O + "[ /]\\d+").exec(u) || "");
+a = +/\d+/.exec(new RegExp(x + "[ /]\\d+").exec(u) || "");
 break;
 
 default:
 a = +/\d+/.exec(/version[ \/]\d+/.exec(u) || "");
 }
-var z = !1;
+var q = !1;
 try {
-var q = {
+var z = {
 get passive() {
-z = !0;
+q = !0;
 }
 }, K = function() {};
-window.addEventListener("test", K, q);
-window.removeEventListener("test", K, q);
+window.addEventListener("test", K, z);
+window.removeEventListener("test", K, z);
 } catch (e) {
-z = !1;
+q = !1;
 }
 if (p) {
 var F = [];
 M.leaksMemory = function(e) {
-i.isFunction(e);
+o.isFunction(e);
 F.push(e);
 };
-var H = function() {
+var W = function() {
 for (var e = 0; e < F.length; e++) F[e]();
 };
 M.leaksMemory.remove = function(e) {
 for (var t = F.length - 1; t >= 0; t--) e == F[t] && F.splice(t, 1);
 };
-window.attachEvent("onunload", H);
+window.attachEvent("onunload", W);
 }
-var G = "Shockwave Flash", B = "ShockwaveFlash.ShockwaveFlash", W = "application/x-shockwave-flash", Y = "application/x-java-vm";
+var H = "Shockwave Flash", B = "ShockwaveFlash.ShockwaveFlash", G = "application/x-shockwave-flash", Y = "application/x-java-vm";
 return {
-browser: O,
+browser: x,
 version: a,
-isStrict: x,
-isQuirks: S,
+isStrict: A,
+isQuirks: I,
 isOpera: m,
 isSafari: v,
 isWebKit: y,
 isChrome: _,
-isAndroid: k,
+isAndroid: T,
 isIPhone: b,
 isIPod: $,
 isIPad: E,
-isIOS: T,
-isWP7: A,
+isIOS: k,
+isWP7: O,
 isMobile: L,
 isNewIE: l,
 isEdge: g,
-isIE: h,
+isIE: d,
 isIE6: p,
-isIE7: f,
-isIE8: d,
+isIE7: h,
+isIE8: f,
 isFF: w,
-isCustomEvents: V,
-CustomEvent: j,
-engineIE: R,
+isCustomEvents: j,
+CustomEvent: U,
+engineIE: C,
 bugs: M,
-isWindows: C,
-isMac: I,
+isWindows: S,
+isMac: D,
 isSecure: N,
 secureURL: e,
 hasFlash: function() {
-var e, t = c.plugins && c.plugins[G];
+var e, t = c.plugins && c.plugins[H];
 if (t) {
-e = c.mimeTypes && c.mimeTypes[W];
+e = c.mimeTypes && c.mimeTypes[G];
 return e && !e.enabledPlugin ? null : t.description;
 }
 if (window.ActiveXObject) try {
@@ -396,17 +391,19 @@ return t.GetVariable("$version");
 }(),
 hasJava: function() {
 var e = c.mimeTypes;
-return h ? !A && ("javaEnabled" in c && c.javaEnabled()) : e && (e = e[Y]) && (e = e.enabledPlugin) ? e.name : void 0;
+return d ? !O && ("javaEnabled" in c && c.javaEnabled()) : e && (e = e[Y]) && (e = e.enabledPlugin) ? e.name : void 0;
 }(),
 language: P,
-getScrollbarSize: r,
+getScrollbarSize: i,
 getWindowClientHeight: t,
 getWindowClientWidth: n,
-isTextContent: U,
-hasPassiveListeners: z
+isTextContent: V,
+hasPassiveListeners: q
 };
-}();
-e.exports = r;
+}
+var o = n(23), r = n(1), s = i();
+s.sniffBrowser = i;
+e.exports = s;
 }, function(e, t, n) {
 function i() {
 if (window.$zopim && window.$zopim.s) return window.$zopim.s.src;
@@ -417,11 +414,19 @@ if (n.test(e)) return e;
 return "";
 }
 function o(e) {
-e && !p.test(e) && (e = null);
-var t = "id." + (l.brandDomain || "zopim.com");
+e && !m.test(e) && (e = null);
+var t = "id." + (d.brandDomain || "zopim.com");
 return "https://" + (e || t) + "/authenticated/web/jwt";
 }
-var r = n(1), s = n(5), a = n(3), c = n(23), u = n(13), l = function() {
+function r(e) {
+if (e) {
+if (g.test(e)) return e.replace(g, "$1.zopim.com$2");
+m.test(e) || (e = null);
+}
+var t = "widget-mediator." + (d.brandDomain && d.brandDomain.replace(/:[0-9]+/, "") || "zopim.com");
+return e || t;
+}
+var s = n(1), a = n(4), c = n(2), u = n(46), l = n(21), d = function() {
 for (var e = i(), t = [ /\/?[?]/, /\/livechat\// ], n = [], o = 0; o < t.length; o++) {
 n = e.split(t[o]);
 if (n.length) break;
@@ -435,23 +440,23 @@ brandDomain: u,
 baseURL: l,
 rootURL: a
 };
-}(), h = "https://v2.zopim.com/widget", d = h + "/images", f = c.map([ ".zopim.com", ".zopim.org", ".zdch.at" ], u.escape), p = new RegExp("^[a-z][a-z0-9_-]*(\\.[a-z][a-z0-9_-]*)*(" + f.join("|") + ")(:\\d+)?$", "i");
-r(s.baseURL, !0) && (s.baseURL = a.secureURL(l.baseURL));
-var m = {
-ASSETS_URL: h,
-IMAGES_URL: d,
+}(), f = "https://v2.zopim.com/widget", h = f + "/images", p = u.map([ ".zopim.com", ".zopim.org", ".zdch.at", ".zd-dev.com", ".bre-zd.com" ], l.escape), m = new RegExp("^[a-z][a-z0-9_-]*(\\.[a-z][a-z0-9_-]*)*(" + p.join("|") + ")(:\\d+)?$", "i"), g = /^([a-z][a-z0-9_-]*)(:\d+)?$/i;
+s(a.baseURL, !0) && (a.baseURL = c.secureURL(d.baseURL));
+var _ = {
+ASSETS_URL: f,
+IMAGES_URL: h,
 SOUNDS_URL: "https://v2.zopim.com/widget/sounds",
 FONTS_URL: "https://v2.zopim.com/widget/fonts",
 ASSETS_LEGACY: document.location.protocol + "//cdn.zopim.com/assets",
 BRANDING_URL: "https://www.zopim.com",
 AVATARS: {
-CONCIERGE: d + "/avatar_simple_agent.png",
-AGENT: d + "/avatar_simple_agent.png",
-VISITOR: d + "/avatar_simple_visitor.png",
-DEFAULT: d + "/avatar_simple_visitor.png"
+CONCIERGE: h + "/avatar_simple_agent.png",
+AGENT: h + "/avatar_simple_agent.png",
+VISITOR: h + "/avatar_simple_visitor.png",
+DEFAULT: h + "/avatar_simple_visitor.png"
 },
-ACCOUNT_KEY: l.accountKey,
-BRAND_DOMAIN: l.brandDomain,
+ACCOUNT_KEY: d.accountKey,
+BRAND_DOMAIN: d.brandDomain,
 COUNTRY_CODE: function() {
 var e = '<!--# echo var="http_cf_ipcountry" default="geo" -->'.toUpperCase();
 "<" == e.charAt(0) && (e = "geo");
@@ -462,7 +467,7 @@ AUTH_LOGOUT_URL: "https://www.zopim.com/auth/logout/$KEY-$MID",
 AUTH_SERVER_URL: o(),
 IS_POPOUT: window.$zopim_popout,
 POPOUT_WINDOW_PREFIX: "zlivechatpopout_",
-POPOUT_URL: l.rootURL + "/widget/livechat.html",
+POPOUT_URL: d.rootURL + "/widget/livechat.html",
 CALLBACK_FILE_UPLOAD_PATH: "/client/widget/upload",
 FILE_UPLOAD_PATH: "/client/widget/uploads",
 FILE_UPLOAD_MAX: 20971520,
@@ -470,15 +475,21 @@ RESEND_MSG_TIMEOUT: 5e3,
 FILE_REPLACE_SOURCE: /^(\s*https?\:\/\/v2(?:assets|uploads)\.zopim\.)com(\/)/i,
 FILE_REPLACE_RESULT: "$1io$2",
 CHAT_LOG_REMEMBER_COUNT: 10,
-getAuthServerURL: o
+getAuthServerURL: o,
+getMediatorHost: r
 };
-e.exports = m;
+e.exports = _;
 }, function(e, t) {
 var n = {
-build_number: "20190312.045123",
-git_commit: "6a98867ed130c98803ae12e96dcec4a218bde5f9",
-release_tag: "1.8.1"
+build_number: "20200423.075440",
+git_commit: "a2e84ec3fc0a7507e1dcc0cd9c0b4c7c6519e194",
+release_tag: "1.11.2"
 };
+e.exports = n;
+}, function(e, t) {
+function n(e) {
+return "function" == typeof e;
+}
 e.exports = n;
 }, function(e, t, n) {
 function i(e, t) {
@@ -500,28 +511,28 @@ r in e && (n[r] = e[r]);
 return n;
 }
 function r() {
-for (var e, t, n = arguments.length, i = 1, o = arguments[0] || {}; i < n; i++) if (null != (e = arguments[i])) for (t in e) e.hasOwnProperty(t) && o !== e[t] && (o[t] = e[t]);
+for (var e, t, n = arguments.length, i = 1, o = arguments[0] || {}; i < n; i++) if (null != (e = arguments[i])) for (t in e) Object.prototype.hasOwnProperty.call(e, t) && o !== e[t] && (o[t] = e[t]);
 return o;
 }
 function s(e, t) {
-for (var n in t) if (t.hasOwnProperty(n)) if (t[n] && t[n].constructor && t[n].constructor === Object) {
+for (var n in t) if (Object.prototype.hasOwnProperty.call(t, n)) if (t[n] && t[n].constructor && t[n].constructor === Object) {
 e[n] = e[n] || {};
 s(e[n], t[n]);
 } else e[n] = t[n];
 return e;
 }
 function a(e, t) {
-for (var n in t) if (t.hasOwnProperty(n)) {
+for (var n in t) if (Object.prototype.hasOwnProperty.call(t, n)) {
 if (!(n in e)) continue;
 t[n] && t[n].constructor && t[n].constructor === Object ? a(e[n], t[n]) : delete e[n];
 }
 return e;
 }
 function c() {
-if (void 0 === O) try {
-O = u();
+if (void 0 === x) try {
+x = u();
 } catch (e) {}
-return O;
+return x;
 }
 function u() {
 if (!window.getComputedStyle) return !1;
@@ -540,30 +551,30 @@ function l(e) {
 var t = e.getComputedStyle();
 if ("auto" == t.height) return e.getHeight();
 var n = parseInt(t.height, 10) || 0;
-V.computedHeightBoxSizingBug() && (n += (parseInt(t.paddingTop, 10) || 0) + (parseInt(t.paddingBottom, 10) || 0) + (parseInt(t.borderTopWidth, 10) || 0) + (parseInt(t.borderBottomWidth, 10) || 0));
+j.computedHeightBoxSizingBug() && (n += (parseInt(t.paddingTop, 10) || 0) + (parseInt(t.paddingBottom, 10) || 0) + (parseInt(t.borderTopWidth, 10) || 0) + (parseInt(t.borderBottomWidth, 10) || 0));
 return n + "px";
 }
-function h(e) {
+function d(e) {
 function t() {
 this.addClass("hover");
 }
 function n() {
 this.removeClass("hover");
 }
-if (x.bugs.noBoxSizing) {
+if (A.bugs.noBoxSizing) {
 e.on("mouseover", t);
 e.on("mouseout", n);
 }
 }
-function d(e, t) {
+function f(e, t) {
 for (var n, i = t.split("."); i.length; ) {
 n = i.shift();
-S(e[n], !0) && (e[n] = {});
+I(e[n], !0) && (e[n] = {});
 e = e[n];
 }
 return e;
 }
-function f(e, t) {
+function h(e, t) {
 if (0 === t.indexOf(e.path)) {
 for (var n, i = e.path.split(".").length, o = t.split(".").slice(i), r = e.update; o.length; ) {
 n = o.shift();
@@ -590,9 +601,9 @@ var i = {
 domain: n,
 path: "/"
 };
-R.set("zte2095", "1", i);
-if ("1" == R.get("zte2095")) {
-R.remove("zte2095", i);
+C.set("zte2095", "1", i);
+if ("1" == C.get("zte2095")) {
+C.remove("zte2095", i);
 break;
 }
 n = "." + t.pop() + n;
@@ -600,15 +611,15 @@ n = "." + t.pop() + n;
 return n;
 }
 function g(e) {
-return z.test(e);
+return q.test(e);
 }
 function _(e) {
-return j.test(e);
+return U.test(e);
 }
 function v(e) {
 if (e && "object" == typeof e) {
 var t = [];
-for (var n in e) e.hasOwnProperty(n) && t.push(n);
+for (var n in e) Object.prototype.hasOwnProperty.call(e, n) && t.push(n);
 return t;
 }
 }
@@ -636,15 +647,15 @@ function b(e, t) {
 function n(e, t, n) {
 return n.replace("<hours>", e).replace("<minutes>", t);
 }
-var i = D("<hours>:<minutes>"), o = D("<hours>:<minutes> am"), r = D("<hours>:<minutes> pm"), s = "24" === t ? 24 : 12, a = function(e, t) {
+var i = R("<hours>:<minutes>"), o = R("<hours>:<minutes> am"), r = R("<hours>:<minutes> pm"), s = "24" === t ? 24 : 12, a = function(e, t) {
 return e - Math[e > 0 ? "floor" : "ceil"](e / t) * t;
-}(Math[e > 0 ? "floor" : "ceil"](e / 60), s), c = V.pad(Math.abs(e) % 60, 2);
-if (24 === s) return n(V.pad(a, 2), c, i);
+}(Math[e > 0 ? "floor" : "ceil"](e / 60), s), c = j.pad(Math.abs(e) % 60, 2);
+if (24 === s) return n(j.pad(a, 2), c, i);
 var u = 0 === a ? 12 : a;
 return Math.abs(e / 60) % 24 < 12 ? n(u, c, o) : n(u, c, r);
 }
 function $(e) {
-return e && e.replace(C.FILE_REPLACE_SOURCE, C.FILE_REPLACE_RESULT);
+return e && e.replace(S.FILE_REPLACE_SOURCE, S.FILE_REPLACE_RESULT);
 }
 function E(e, t) {
 t = parseInt(t, 10);
@@ -661,7 +672,7 @@ o[s] = a[s];
 }
 return o;
 }
-function T(e, t) {
+function k(e, t) {
 var n;
 if (e.leaf && e.parentNode) {
 n = {};
@@ -669,18 +680,18 @@ n[e.name] = t;
 e.parentNode.write(n);
 } else e.write(t);
 }
-function k() {
-if (x.isNewIE) try {
+function T() {
+if (A.isNewIE) try {
 "body" !== document.activeElement.nodeName.toLowerCase() && document.activeElement.focus();
 } catch (e) {}
 }
-function A() {
-window.console && window.console.warn && window.console.warn("The Zopim widget embed code is invalid. Please email chat@zendesk.com with your account key: " + C.ACCOUNT_KEY);
+function O() {
+window.console && window.console.warn && window.console.warn("The Zopim widget embed code is invalid. Please email chat@zendesk.com with your account key: " + S.ACCOUNT_KEY);
 }
 function L(e, t, n) {
-return C.AUTH_URL.replace("$NAME", e).replace("$KEY", t).replace("$MID", n);
+return S.AUTH_URL.replace("$NAME", e).replace("$KEY", t).replace("$MID", n);
 }
-var O, x = n(3), S = n(1), D = n(12), R = n(19), C = n(4), I = "-webkit- -moz- -o- -ms- ".split(" "), N = "webkit Moz O ms ".split(" "), P = [ "transition", "MozTransition", "OTransition", "WebkitTransition" ], M = [ "transitionend", "transitionend", "otransitionend", "webkitTransitionEnd" ], U = [ "animationend", "animationend", "oanimationend", "webkitAnimationEnd" ], V = {
+var x, A = n(2), I = n(1), R = n(11), C = n(16), S = n(3), D = "-webkit- -moz- -o- -ms- ".split(" "), N = "webkit Moz O ms ".split(" "), P = [ "transition", "MozTransition", "OTransition", "WebkitTransition" ], M = [ "transitionend", "transitionend", "otransitionend", "webkitTransitionEnd" ], V = [ "animationend", "animationend", "oanimationend", "webkitAnimationEnd" ], j = {
 contains: function() {
 var e = document.documentElement;
 return e.compareDocumentPosition ? function(e, t) {
@@ -701,9 +712,9 @@ return !1;
 }(),
 onTransitionEnd: i(!0, M),
 unTransitionEnd: i(!1, M),
-onAnimationEnd: i(!0, U),
-unAnimationEnd: i(!1, U),
-css_prefixes: I,
+onAnimationEnd: i(!0, V),
+unAnimationEnd: i(!1, V),
+css_prefixes: D,
 cssom_prefixes: N,
 isStyleSupported: function() {
 function e(e) {
@@ -719,79 +730,33 @@ fullyExtend: s,
 fullyDelete: a,
 computedHeightBoxSizingBug: c,
 getComputedHeight: l,
-hoverFix: h,
+hoverFix: d,
 getEffectiveTLD: m,
-descendsObj: d,
+descendsObj: f,
 insertObj: p,
-getValueByReference: f,
+getValueByReference: h,
 isDefaultName: _,
 getKeys: v,
 supportsDataURI: y,
 isIE: function() {
-return x.isIE || /Trident\//.test(window.navigator.userAgent);
+return A.isIE || /Trident\//.test(window.navigator.userAgent);
 }(),
 pad: w,
 formatMinutesAsHours: b,
 replaceFileHostname: $,
 getLastLogEntries: E,
-writeNode: T,
+writeNode: k,
 isAgentNick: g,
-refocusActiveElement: k,
-warnBadEmbed: A,
+refocusActiveElement: T,
+warnBadEmbed: O,
 getAuthLoginUrl: L
-}, j = /^Visitor [0-9]{3,}$/, z = /^agent:[0-9]+/i;
-e.exports = V;
+}, U = /^Visitor [0-9]{3,}$/, q = /^agent:[0-9]+/i;
+e.exports = j;
 }, function(e, t) {
 function n(e) {
 return "[object Array]" == Object.prototype.toString.call(e);
 }
 e.exports = n;
-}, function(e, t, n) {
-function i(e, t) {
-if (!r(e)) throw new TypeError("FunctionUtils.bind - what is trying to be bound is not callable");
-if (r(e.bind) && !("prototype" in e.bind)) return e.bind.apply(e, a.call(arguments, 1));
-var n = a.call(arguments, 2), i = function() {}, o = function() {
-return e.apply(this instanceof i && t ? this : t, n.concat(a.call(arguments)));
-};
-i.prototype = o.prototype;
-o.prototype = new i();
-return o;
-}
-function o(e) {
-var t;
-return function() {
-if (!t) {
-t = !0;
-return e.apply(this, a.call(arguments));
-}
-};
-}
-var r = n(2), s = {
-bind: i,
-once: o
-}, a = Array.prototype.slice;
-e.exports = s;
-}, function(e, t) {
-function n(e) {
-"use strict";
-if (null == this) throw new TypeError();
-var t = Object(this), n = t.length >>> 0;
-if (0 === n) return -1;
-var i = 0;
-if (arguments.length > 0) {
-i = Number(arguments[1]);
-i != i ? i = 0 : 0 != i && i != 1 / 0 && i != -1 / 0 && (i = (i > 0 || -1) * Math.floor(Math.abs(i)));
-}
-if (i >= n) return -1;
-for (var o = i >= 0 ? i : Math.max(n - Math.abs(i), 0); o < n; o++) if (o in t && t[o] === e) return o;
-return -1;
-}
-function i(e, t, n) {
-return o.call(t, e, n);
-}
-var o = Array.prototype.indexOf;
-"function" == typeof o && /\[native code\]/.test(o.toString()) || (o = n);
-e.exports = i;
 }, function(e, t, n) {
 function i(e) {
 if (!(this instanceof i)) {
@@ -818,7 +783,7 @@ c = new i(e.location.search);
 };
 i.buildQuery = function(e) {
 var t, n, i, o, s, a, c = [], u = [];
-for (s in e) e.hasOwnProperty(s) && c.push(s);
+for (s in e) Object.prototype.hasOwnProperty.call(e, s) && c.push(s);
 c.sort();
 for (t = 0, i = c.length; t < i; t++) {
 s = c[t];
@@ -857,7 +822,7 @@ u.add = function(e, t) {
 this.has(e) ? this.store[e].push(t) : this.store[e] = [ t ];
 };
 u.has = function(e) {
-return this.store.hasOwnProperty(e);
+return Object.prototype.hasOwnProperty.call(this.store, e);
 };
 u.getLast = function(e, t, n) {
 return this.has(e) ? this.getAt(e, this.store[e].length - 1, t, n) : o(void 0, t, n);
@@ -877,11 +842,36 @@ return i.buildQuery(this.store);
 };
 e.exports = i;
 }, function(e, t, n) {
-function i(e) {
-return '"' + e.replace(h, o) + '"';
+function i(e, t) {
+if (!r(e)) throw new TypeError("FunctionUtils.bind - what is trying to be bound is not callable");
+if (r(e.bind) && !("prototype" in e.bind)) return e.bind.apply(e, a.call(arguments, 1));
+var n = a.call(arguments, 2), i = function() {}, o = function() {
+return e.apply(this instanceof i && t ? this : t, n.concat(a.call(arguments)));
+};
+i.prototype = o.prototype;
+o.prototype = new i();
+return o;
 }
 function o(e) {
-return d[e] || "\\u" + ("0000" + e.charCodeAt(0).toString(16)).slice(-4);
+var t;
+return function() {
+if (!t) {
+t = !0;
+return e.apply(this, a.call(arguments));
+}
+};
+}
+var r = n(5), s = {
+bind: i,
+once: o
+}, a = Array.prototype.slice;
+e.exports = s;
+}, function(e, t, n) {
+function i(e) {
+return '"' + e.replace(d, o) + '"';
+}
+function o(e) {
+return f[e] || "\\u" + ("0000" + e.charCodeAt(0).toString(16)).slice(-4);
 }
 function r(e) {
 switch (typeof e) {
@@ -916,7 +906,7 @@ function s(e, t, n) {
 return t ? m[t] : String.fromCharCode(parseInt(n, 16));
 }
 function a(e) {
-var t, n, i, o, r, a = e.match(f), c = a.length, u = a[0];
+var t, n, i, o, r, a = e.match(h), c = a.length, u = a[0];
 "{" == u ? (t = {}, r = 1) : "[" == u ? (t = [], r = 1) : (t = [], r = 0, n = !0);
 var l = [ t ];
 for (c = a.length; r < c; ++r) {
@@ -986,10 +976,10 @@ if (1 == l.length) return t[0];
 } else if (!l.length) return t;
 throw "error";
 }
-var c = n(1), u = n(7), l = (n(9), !c(window) && window.JSON || {
+var c = n(1), u = n(7), l = !c(window) && window.JSON || {
 parse: a,
 stringify: r
-}), h = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, d = {
+}, d = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, f = {
 "\b": "\\b",
 "\t": "\\t",
 "\n": "\\n",
@@ -997,7 +987,7 @@ stringify: r
 "\r": "\\r",
 "\\": "\\\\",
 '"': '\\"'
-}, f = new RegExp('(?:false|true|null|[\\{\\}\\[\\]]|(?:-?\\b(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\\b)|(?:"(?:[^\\0-\\x08\\x0a-\\x1f"\\\\]|\\\\(?:["/\\\\bfnrt]|u[0-9A-Fa-f]{4}))*"))', "g"), p = new RegExp("\\\\(?:([^u])|u(.{4}))", "g"), m = {
+}, h = new RegExp('(?:false|true|null|[\\{\\}\\[\\]]|(?:-?\\b(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\\b)|(?:"(?:[^\\0-\\x08\\x0a-\\x1f"\\\\]|\\\\(?:["/\\\\bfnrt]|u[0-9A-Fa-f]{4}))*"))', "g"), p = new RegExp("\\\\(?:([^u])|u(.{4}))", "g"), m = {
 '"': '"',
 "/": "/",
 "\\": "\\",
@@ -1015,9 +1005,9 @@ var n = new o();
 n.add("_", e);
 return n;
 }
--1 == e && (e = v.length);
-var i = v[e];
-i || (v[e] = i = new o());
+-1 == e && (e = y.length);
+var i = y[e];
+i || (y[e] = i = new o());
 if ("string" == typeof t) i.add("_", t); else for (var r in t) t.hasOwnProperty(r) && i.add(r, t[r]);
 return i;
 }
@@ -1026,7 +1016,7 @@ function e(e, t) {
 u[e] = t;
 }
 function t(e) {
-r(e, h);
+r(e, d);
 }
 function n(e) {
 l.push(e);
@@ -1035,7 +1025,7 @@ function i() {
 return s();
 }
 function s(e) {
-return u[e || y] || u._;
+return u[e || w] || u._;
 }
 function a(e) {
 var t, n = s(e);
@@ -1043,7 +1033,7 @@ for (t = 0; t < l.length; t++) l[t](n);
 }
 function c(e, t) {
 var n, i = new o();
-v[u._] = i;
+y[u._] = i;
 for (var r in u) if (u.hasOwnProperty(r)) {
 n = u[r];
 if ("string" != typeof n) continue;
@@ -1052,32 +1042,32 @@ i.add(r, n);
 }
 return i;
 }
-for (var u = {}, l = [], h = {
+for (var u = {}, l = [], d = {
 add: e,
 bind: t,
 onTranslate: n,
 toJSON: i,
 toString: s,
 update: a
-}, d = [ "concat", "replace", "toLowerCase", "toUpperCase" ], f = 0; f < d.length; f++) h[d[f]] = function(e) {
+}, f = [ "concat", "replace", "toLowerCase", "toUpperCase" ], h = 0; h < f.length; h++) d[f[h]] = function(e) {
 return function() {
 return c(e, arguments);
 };
-}(d[f]);
-return h;
+}(f[h]);
+return d;
 }
 function r(e, t) {
-for (var n = 0; n < w.length; n++) if (w[n] == e) {
-b[n] = t;
+for (var n = 0; n < b.length; n++) if (b[n] == e) {
+$[n] = t;
 return;
 }
-w.push(e);
-b.push(t);
+b.push(e);
+$.push(t);
 }
 function s(e) {
-for (var t = 0; t < w.length; t++) if (w[t] == e) {
-w.splice(t, 1);
+for (var t = 0; t < b.length; t++) if (b[t] == e) {
 b.splice(t, 1);
+$.splice(t, 1);
 return;
 }
 }
@@ -1086,40 +1076,40 @@ e = e.split(/-|_/).slice(0, 2);
 var t = e[0] = e[0].toLowerCase();
 e[1] && (e[1] = e[1].toUpperCase());
 e = e.join("_");
-return m.languages ? e in m.languages ? e : t in m.languages ? t : null : null;
+return g.languages ? e in g.languages ? e : t in g.languages ? t : null : null;
 }
 function c(e) {
 var t, n, o, r, s, c;
 e = a(e);
 if (e) {
-s = m.languages[e];
+s = g.languages[e];
 if (s) {
-c = g[m.languages[e]];
+c = _[g.languages[e]];
 if (c) {
-i.language = y = e;
-_.ensureLoaded(c, function(i) {
+i.language = w = e;
+v.ensureLoaded(c, function(i) {
 i && u(e);
-if (e == y) {
-for (t = 0, n = v.length; t < n; t++) v[t].update instanceof Function && v[t].update(e);
-for (t = 0, n = w.length; t < n; t++) {
-o = w[t];
-r = b[t].toString();
-if (E) o.textContent = r; else if ("string" == typeof o.innerText) o.innerText = r; else if ("string" == typeof o.nodeValue) try {
+if (e == w) {
+for (t = 0, n = y.length; t < n; t++) y[t].update instanceof Function && y[t].update(e);
+for (t = 0, n = b.length; t < n; t++) {
+o = b[t];
+r = $[t].toString();
+if (k) o.textContent = r; else if ("string" == typeof o.innerText) o.innerText = r; else if ("string" == typeof o.nodeValue) try {
 o.data = r;
 } catch (e) {}
 }
-$._active = !0;
-n = $.length;
+E._active = !0;
+n = E.length;
 for (t = 0; t < n; t++) try {
-$[t] && $[t](e);
+E[t] && E[t](e);
 } catch (e) {}
-$._active = !1;
-if ($._dirty) {
-for (t = 0; t < n; t++) if (!$[t]) {
-t == n - 1 ? $.pop() : $[t--] = $.pop();
+E._active = !1;
+if (E._dirty) {
+for (t = 0; t < n; t++) if (!E[t]) {
+t == n - 1 ? E.pop() : E[t--] = E.pop();
 n--;
 }
-$._dirty = !1;
+E._dirty = !1;
 }
 }
 });
@@ -1128,61 +1118,43 @@ $._dirty = !1;
 }
 }
 function u(e) {
-var t, n = g[m.languages[e]];
-for (t = 0; t < n.length; t++) 0 !== n[t] && v[t].add(e, n[t]);
+var t, n = _[g.languages[e]];
+for (t = 0; t < n.length; t++) 0 !== n[t] && y[t].add(e, n[t]);
 }
 function l(e) {
-$.push(e);
+E.push(e);
 }
-function h(e) {
-for (var t = 0, n = $.length; t < n; t++) if ($[t] == e) {
-$._active ? ($[t] = null, $._dirty = !0) : t == n - 1 ? $.pop() : $[t] = $.pop();
+function d(e) {
+for (var t = 0, n = E.length; t < n; t++) if (E[t] == e) {
+E._active ? (E[t] = null, E._dirty = !0) : t == n - 1 ? E.pop() : E[t] = E.pop();
 break;
 }
 }
-function d() {
-return !(-1 == y.search(T));
+function f() {
+return !(-1 == w.search(T));
 }
-function f(e) {
-return d() ? e.replace(/left/, "%left%").replace(/right/, "left").replace(/%left%/, "right").replace(/ltr/, "%ltr%").replace(/rtl/, "ltr").replace(/%ltr%/, "rtl") : e;
+function h(e) {
+return f() ? e.replace(/left/, "%left%").replace(/right/, "left").replace(/%left%/, "right").replace(/ltr/, "%ltr%").replace(/rtl/, "ltr").replace(/%ltr%/, "rtl") : e;
 }
-var p = n(3), m = n(5), g = n(22), _ = n(47), v = [], y = "_", w = [], b = [], $ = [], E = p.isTextContent, T = /^ar|^fa|^he|^ku|^ur/, k = m.strings;
-if (k) for (var A = 0; A < k.length; A++) i(A, k[A]);
+function p() {
+var e = g.strings;
+if (e) for (var t = 0; t < e.length; t++) i(t, e[t]);
+}
+var m = n(2), g = n(4), _ = n(19), v = n(43), y = [], w = "_", b = [], $ = [], E = [], k = m.isTextContent, T = /^ar|^fa|^he|^ur/;
 i.bind = r;
-i.flip = f;
+i.flip = h;
 i.onLanguage = l;
-i.unLanguage = h;
+i.unLanguage = d;
 i.update = c;
 i.unbind = s;
-i.rtl = d;
+i.rtl = f;
 i.findClosestLanguage = a;
+i.loadDefaultStrings = p;
+p();
 e.exports = i;
-}, function(e, t) {
-var n = "[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+([a-z0-9][a-z0-9-]*[a-z0-9])", i = "(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)", o = {
-email: new RegExp("^" + n + "$", "i"),
-ip_token: new RegExp("^" + i + "$"),
-ip: new RegExp("^(?:" + i + "\\.){3}" + i + "$"),
-tld: /^(AERO|ARPA|ASIA|A[CDEFGILMNOQRSTUWXZ]|BIZ|B[ABDEFGHIJMNORSTVWYZ]|CAT|COM|COOP|C[ACDFGHIKLMNORUVXYZ]|D[EJKMOZ]|EDU|E[CEGRSTU]|F[IJKMOR]|GOV|G[ABDEFGHILMNPQRSTUWY]|H[KMNRTU]|INFO|INT|I[DELMNOQRST]|JOBS|J[EMOP]|K[EGHIMNPRWYZ]|L[ABCIKRSTUVY]||MIL|MOBI|MUSEUM|M[ACDEGHKLMNOPQRSTUVWXYZ]|NAME|NET|N[ACEFGILOPRUZ]|ORG|OM|PRO|P[AEFGHKLMNRSTWY]|QA|R[EOSUW]|S[ABCDEGHIJKLMNORTUVYZ]|TEL|TRAVEL|T[CDFGHJKLMNOPRTVWZ]|U[AGKSYZ]|V[ACEGINU]|W[FS]|XN|Y[ET]|Z[AMW])$/i,
-search: {
-email: new RegExp(n, "ig"),
-email_lws: new RegExp("(^|\\s+)" + n, "ig"),
-hurl: /(^|\s+)(?:(?:https?|ftps?):\/\/)(?:\S+)/gi,
-url: /(^|\s+)(?:[\w-]+\.)+(\w{2,})(?::[0-9]+)?(?:\/\S*)?/g,
-phone_number: /(?:^|\s+)(?:(?:\+?\d{1,3}|\(\d{1,3}\))([-.\s])?)?\d{3,10}(?:([-.\s])\d{3,10})?/gi
-},
-escape: function(e) {
-return e.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-};
-e.exports = o;
 }, function(e, t) {
 function n(e) {
 return "string" == typeof e;
-}
-e.exports = n;
-}, function(e, t) {
-function n(e) {
-return "number" == typeof e;
 }
 e.exports = n;
 }, function(e, t, n) {
@@ -1193,38 +1165,38 @@ function o(e) {
 E = e ? v.getAuthServerURL(e) : v.AUTH_SERVER_URL;
 }
 function r(e) {
-d = e;
+f = e;
 }
 function s() {
-return d;
+return f;
 }
 function a(e) {
-if (f) {
-+new Date() - f.issued_at >= f.expires_in - 6e4 ? y.authenticate(function(t) {
+if (h) {
++new Date() - h.issued_at >= h.expires_in - 6e4 ? y.authenticate(function(t) {
 if (t) {
 p && p.$("visitor").$("auth_status$string").update("failed");
 e(t, null);
-} else e(null, f.id_token);
-}) : e(null, f.id_token);
+} else e(null, h.id_token);
+}) : e(null, h.id_token);
 } else e(null, null);
 }
 function c() {
-d = void 0;
 f = void 0;
+h = void 0;
 p && p.$("visitor").$("authenticated$bool").update(!1);
 }
 function u() {
-return !!f;
+return !!h;
 }
 function l(e) {
-d && d(g.once(function(t) {
+f && f(g.once(function(t) {
 t && m(t) ? y.exchangeToken({
 account_key: v.ACCOUNT_KEY,
 auth_url: E,
 site_jwt: t,
-state: f && f.state ? f.state : null
+state: h && h.state ? h.state : null
 }, function(t, n) {
-f = n;
+h = n;
 p && p.$("visitor").$("authenticated$bool").update(!t);
 e(t);
 }) : e({
@@ -1232,7 +1204,7 @@ reason: "invalid jwt in callback"
 });
 }));
 }
-function h(e, t) {
+function d(e, t) {
 var n = new XMLHttpRequest();
 n.open("POST", e.auth_url, !0);
 n.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -1274,7 +1246,7 @@ e.state && (i.state = e.state);
 var o = _.buildQuery(i);
 n.send(o);
 }
-var d, f, p, m = n(14), g = n(8), _ = n(10), v = n(4), y = {
+var f, h, p, m = n(12), g = n(9), _ = n(8), v = n(3), y = {
 authenticate: l,
 isAuthenticated: u,
 getSiteJWTFunc: s,
@@ -1283,19 +1255,19 @@ clearIdentity: c,
 setOverrideHost: o,
 setSiteJWTFunc: r,
 setDataNode: i,
-exchangeToken: h
+exchangeToken: d
 }, w = "format error", b = "network/security error", $ = "jwt verification error", E = v.AUTH_SERVER_URL;
 e.exports = y;
 }, function(e, t, n) {
 function i(e) {
 b.setActivityWindow(e);
-k = $.ACCOUNT_KEY;
+T = $.ACCOUNT_KEY;
 g = (e || window).location.hostname;
 _ = /\b(?:\d{1,3}\.){3}\d{1,3}/.test(g) ? g : E.getEffectiveTLD(g);
 }
 function o() {
-if ($.IS_POPOUT) return b.get(O) || y().get("mid");
-var e = h();
+if ($.IS_POPOUT) return b.get(x) || y().get("mid");
+var e = d();
 return e || (b.get(L) || "");
 }
 function r(e) {
@@ -1312,14 +1284,14 @@ domain: _
 });
 }
 function a() {
-var e = d();
+var e = f();
 if ("boolean" == typeof e) return e;
-var t = b.get(x);
+var t = b.get(A);
 t = parseInt(t, 10);
 return 0 !== t && (1 === t || void 0);
 }
 function c() {
-b.remove(x, {
+b.remove(A, {
 path: "/",
 domain: _
 });
@@ -1327,7 +1299,7 @@ domain: _
 function u(e) {
 e = v(e);
 e = e ? 1 : 0;
-b.set(x, e, {
+b.set(A, e, {
 path: "/",
 ttl: 365,
 domain: _
@@ -1335,47 +1307,47 @@ domain: _
 }
 function l() {
 s();
-w.remove(A);
+w.remove(O);
 }
-function h() {
+function d() {
 var e = b.getJSONCookie("__zlcid");
 b.remove("__zlcid", {
 path: "/"
 });
 if (e.mID) return e.mID;
-var t = f("__zlcstore");
+var t = h("__zlcstore");
 b.remove("__zlcstore", {
 path: "/",
 domain: _
 });
 return t && t.mID ? t.mID : void 0;
 }
-function d() {
-var e, t = f("__zlcprivacy");
+function f() {
+var e, t = h("__zlcprivacy");
 if ("boolean" == typeof t) {
 e = t;
 u(t);
 }
 return e;
 }
-function f(e) {
-return b.getJSONCookie(e)[k];
+function h(e) {
+return b.getJSONCookie(e)[T];
 }
 function p(e, t) {
-var n = w.get(A) || {};
-n[k] || (n[k] = {});
-var i = n[k];
+var n = w.get(O) || {};
+n[T] || (n[T] = {});
+var i = n[T];
 i[e] = t;
 i.timestamp = +new Date();
-w.set(A, n);
+w.set(O, n);
 }
 function m(e) {
-var t = w.get(A) || {};
-if (!t[k]) return {};
-var n = t[k];
-return n.timestamp ? +new Date() - n.timestamp > T ? {} : n[e] : n[e] || {};
+var t = w.get(O) || {};
+if (!t[T]) return {};
+var n = t[T];
+return n.timestamp ? +new Date() - n.timestamp > k ? {} : n[e] : n[e] || {};
 }
-var g, _, v = n(42), y = n(10), w = n(41), b = n(19), $ = n(4), E = n(6), T = 48e4, k = $.ACCOUNT_KEY, A = "__zlcstore", L = "__zlcmid", O = "__zlcpomid", x = "__zlcprivacy", S = {
+var g, _, v = n(38), y = n(8), w = n(37), b = n(16), $ = n(3), E = n(6), k = 48e4, T = $.ACCOUNT_KEY, O = "__zlcstore", L = "__zlcmid", x = "__zlcpomid", A = "__zlcprivacy", I = {
 init: i,
 DOM: {
 saveVariable: p,
@@ -1390,7 +1362,7 @@ clearAllowCookieLaw: c,
 getAllowCookieLaw: a,
 setAllowCookieLaw: u
 };
-e.exports = S;
+e.exports = I;
 }, function(e, t, n) {
 function i() {
 var e = this;
@@ -1425,7 +1397,7 @@ var s = new _('Expect key "' + r + '" to be defined', n);
 return s.unshiftPath(r);
 }
 }
-for (var a in n) if (n.hasOwnProperty(a)) {
+for (var a in n) if (Object.prototype.hasOwnProperty.call(n, a)) {
 var c, u = n[a], l = e[a];
 if (l) c = l(u); else {
 if (t && !t.whitelistedKeysOnly) continue;
@@ -1456,17 +1428,17 @@ return function(t) {
 if (t.length < e) return new _('Expect the length of "' + t + '" to be at least ' + e, t);
 };
 }
-function h(e) {
+function d(e) {
 return function(t) {
 if (t.length > e) return new _('Expect the length of "' + t + '" to be at most ' + e, t);
 };
 }
-function d() {
+function f() {
 return function(e) {
 if (!v(e)) return new _('Expect "' + e + '" to be an Array', e);
 };
 }
-function f(e) {
+function h(e) {
 return function(t) {
 var n;
 if (!v(t)) return new _('Expect "' + t + '" to be an Array', t);
@@ -1498,7 +1470,7 @@ this.paths.unshift(e);
 return this;
 };
 }
-var v = n(7), y = n(8), w = window.Error, b = {
+var v = n(7), y = n(9), w = window.Error, b = {
 any: o,
 equal: r,
 obj: s,
@@ -1507,9 +1479,9 @@ ok: c,
 chain: m,
 regex: u,
 minLength: l,
-maxLength: h,
-array: d,
-each: f,
+maxLength: d,
+array: f,
+each: h,
 predicate: p
 }, $ = Object.keys(b), E = i.prototype;
 $.forEach(function(e) {
@@ -1550,7 +1522,7 @@ _.prototype.name = "ValidationError";
 }, function(e, t, n) {
 function i(e) {
 m = e || window;
-f = m.encodeURIComponent;
+h = m.encodeURIComponent;
 p = m.decodeURIComponent;
 }
 function o(e) {
@@ -1575,13 +1547,13 @@ return o(e) ? r()[e] || null : null;
 function a(e) {
 var t = s(e), n = {};
 try {
-n = h.parse(t);
+n = d.parse(t);
 } catch (e) {}
 return n && "object" == typeof n ? n : {};
 }
 function c(e, t, n) {
 n = n || {};
-var i = f(e) + "=" + f(t);
+var i = h(e) + "=" + h(t);
 if ("ttl" in n) {
 var o = new Date(), r = 24 * n.ttl * 60 * 60 * 1e3;
 o.setTime(o.getTime() + r);
@@ -1590,26 +1562,27 @@ i += "; expires=" + o.toGMTString();
 "path" in n && (i += "; path=" + n.path);
 "domain" in n && (i += "; domain=" + n.domain);
 n.secure && (i += "; secure");
+i += "; SameSite=" + (n.samesite || "Lax");
 m.document.cookie = i;
 }
 function u(e, t, n) {
 "object" != typeof t && (t = {});
-c(e, h.stringify(t), n);
+c(e, d.stringify(t), n);
 }
 function l(e, t) {
 t = t || {};
 t.ttl = -1;
 c(e, "", t);
 }
-var h = n(11), d = {
+var d = n(10), f = {
 set: c,
 get: s,
 getJSONCookie: a,
 setJSONCookie: u,
 remove: l,
 setActivityWindow: i
-}, f = window.encodeURIComponent, p = window.decodeURIComponent, m = window;
-e.exports = d;
+}, h = window.encodeURIComponent, p = window.decodeURIComponent, m = window;
+e.exports = f;
 }, function(e, t, n) {
 function i(e, t, n) {
 s.ok("function" == typeof e, "1st argument to nextTick must be a function");
@@ -1639,7 +1612,7 @@ break;
 }
 }
 }
-var r, s = n(26), a = n(0), c = 100, u = [];
+var r, s = n(23), a = n(0), c = 100, u = [];
 i.tick = o;
 e.exports = i;
 }, function(e, t, n) {
@@ -1691,7 +1664,7 @@ return e && e.replace(a, function(e) {
 return "&#" + e.charCodeAt(0) + ";";
 });
 }
-var r = n(0), s = n(20);
+var r = n(0), s = n(17);
 i.prototype.setScope = function(e) {
 this.scope = e;
 };
@@ -1718,93 +1691,11 @@ this.doc = this.win = this.iframe = this.win.$Loader = null;
 };
 e.exports = i;
 }, function(e, t, n) {
-var i = n(5), o = {};
+var i = n(4), o = {};
 o.$Data = i;
 e.exports = o;
-}, function(e, t, n) {
-function i(e, t) {
-return t ? s(e, t) : o(e);
-}
-function o(e) {
-for (var t, n, i = e.length; i > 1; ) {
-t = Math.floor(i-- * Math.random());
-n = e[t];
-e[t] = e[i];
-e[i] = n;
-}
-return e;
-}
-function r(e, t) {
-if (!e || e.length <= 0) return -1;
-if (!t) return Math.floor(Math.random() * e.length);
-t = a(e, t);
-var n, i = 0;
-for (n = t.length; n--; ) i += t[n];
-var o = Math.random() * i, r = 0, s = t.length;
-for (n = 0; n < s - 1; n++) {
-r += t[n];
-if (o <= r) return n;
-}
-return n;
-}
-function s(e, t) {
-var n, i, o, r, s, c = e.concat();
-t = a(e, t);
-e.length = 0;
-s = 0;
-for (n = t.length; n--; ) s += t[n];
-o = Math.random() * s;
-r = 0;
-n = 0;
-for (;c.length; ) {
-r += t[n];
-if (o <= r) {
-s -= t[n];
-i = c.splice(n, 1)[0];
-t.splice(n, 1);
-e.push(i);
-o = Math.random() * s;
-r = 0;
-n = 0;
-} else n++;
-}
-return e;
-}
-function a(e, t) {
-if (u(t)) {
-if (t.length === e.length) return t.concat();
-throw new window.Error("Invalid weights array: length does not match");
-}
-if (l(t)) return c(e, t);
-throw new window.Error("Invalid weights supplied");
-}
-function c(e, t, n) {
-var i, o, r;
-if (!u(e)) throw new TypeError(" arr is not an array");
-var s = Object(e), a = s.length >>> 0;
-if (!l(t)) throw new TypeError(t + " is not a function");
-arguments.length > 2 && (i = n);
-o = new Array(a);
-r = 0;
-for (;r < a; ) {
-var c, h;
-if (r in s) {
-c = s[r];
-h = t.call(i, c, r, s);
-o[r] = h;
-}
-r++;
-}
-return o;
-}
-var u = n(7), l = n(2), h = {
-shuffle: i,
-random_index: r,
-map: c
-};
-e.exports = h;
-}, function(e, t, n) {
-function i(e, t) {
+}, function(e, t) {
+function n(e, t) {
 function n() {
 a = !a;
 e.apply(o, i);
@@ -1824,7 +1715,7 @@ r && clearTimeout(r);
 r = setTimeout(n, t);
 };
 }
-function o(e, t) {
+function i(e, t) {
 function n() {
 e.apply(o, i);
 }
@@ -1836,7 +1727,7 @@ o = this;
 r = setTimeout(n, t);
 };
 }
-function r(e, t) {
+function o(e, t) {
 function n() {
 s = +new Date();
 r = null;
@@ -1852,7 +1743,7 @@ e >= t ? n() : r = setTimeout(n, t - e);
 }
 };
 }
-function s(e, t) {
+function r(e, t) {
 function n() {
 s = +new Date();
 i = o.length > 1 ? setTimeout(n, t) : null;
@@ -1868,43 +1759,41 @@ e >= t ? n() : i = setTimeout(n, t - e);
 }
 };
 }
-var a = (n(8), {
-debounceExceptFirst: i,
-debounce: o,
-throttle: r,
-queue: s
-});
-e.exports = a;
-}, function(e, t) {
-var n = function(e, t) {
-return e === t || e && t && "object" == typeof e && "object" == typeof t && i(e, t);
-}, i = function(e, t) {
-var i;
-for (i in e) if (!n(e[i], t[i])) return !1;
-for (i in t) if (!n(e[i], t[i])) return !1;
-return !0;
-}, o = function(e) {
-if ("object" != typeof e || !e) return e;
-var t = {};
-for (var n in e) e.hasOwnProperty(n) && (t[n] = o(e[n]));
-return t;
-}, r = function(e) {
-if (e) for (var t = 1, n = arguments.length; t < n; t++) {
-var i = arguments[t];
-if (i) for (var o in i) i.hasOwnProperty(o) && (e[o] = i[o]);
-}
-return e;
-}, s = {
-equal: n,
-clone: o,
-extend: r
+var s = {
+debounceExceptFirst: n,
+debounce: i,
+throttle: o,
+queue: r
 };
 e.exports = s;
+}, function(e, t) {
+var n = "[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+([a-z0-9][a-z0-9-]*[a-z0-9])", i = "(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)", o = {
+email: new RegExp("^" + n + "$", "i"),
+ip_token: new RegExp("^" + i + "$"),
+ip: new RegExp("^(?:" + i + "\\.){3}" + i + "$"),
+tld: /^(AERO|ARPA|ASIA|A[CDEFGILMNOQRSTUWXZ]|BIZ|B[ABDEFGHIJMNORSTVWYZ]|CAT|COM|COOP|C[ACDFGHIKLMNORUVXYZ]|D[EJKMOZ]|EDU|E[CEGRSTU]|F[IJKMOR]|GOV|G[ABDEFGHILMNPQRSTUWY]|H[KMNRTU]|INFO|INT|I[DELMNOQRST]|JOBS|J[EMOP]|K[EGHIMNPRWYZ]|L[ABCIKRSTUVY]||MIL|MOBI|MUSEUM|M[ACDEGHKLMNOPQRSTUVWXYZ]|NAME|NET|N[ACEFGILOPRUZ]|ORG|OM|PRO|P[AEFGHKLMNRSTWY]|QA|R[EOSUW]|S[ABCDEGHIJKLMNORTUVYZ]|TEL|TRAVEL|T[CDFGHJKLMNOPRTVWZ]|U[AGKSYZ]|V[ACEGINU]|W[FS]|XN|Y[ET]|Z[AMW])$/i,
+search: {
+email: new RegExp(n, "ig"),
+email_lws: new RegExp("(^|\\s+)" + n, "ig"),
+hurl: /(^|\s+)(?:(?:https?|ftps?):\/\/)(?:\S+)/gi,
+url: /(^|\s+)(?:[\w-]+\.)+(\w{2,})(?::[0-9]+)?(?:\/\S*)?/g,
+phone_number: /(?:^|\s+)(?:(?:\+?\d{1,3}|\(\d{1,3}\))([-.\s])?)?\d{3,10}(?:([-.\s])\d{3,10})?/gi
+},
+escape: function(e) {
+return e.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+};
+e.exports = o;
+}, function(e, t) {
+function n(e) {
+return "number" == typeof e;
+}
+e.exports = n;
 }, function(e, t, n) {
 function i(e, t) {
 e || r.log(t);
 }
-var o = n(2), r = {
+var o = n(5), r = {
 ok: i,
 isFunction: function(e, t) {
 i(o(e), t);
@@ -1916,8 +1805,8 @@ e.exports = r;
 function n(e, t) {
 c = e.$("connection");
 u = t.$("tmp");
-d = c.$("status$string");
-f = c.$("socket_status$string");
+f = c.$("status$string");
+h = c.$("socket_status$string");
 p = c.$("disconnection_status$string");
 m = c.$("socket_resume_timestamp$int");
 g = c.$("socket_open_timestamp$int");
@@ -1933,21 +1822,21 @@ function o() {
 i();
 l = clearTimeout(l);
 c = u = null;
-d = f = p = m = g = _ = v = y = null;
-h = void 0;
+f = h = p = m = g = _ = v = y = null;
+d = void 0;
 }
 function r(e) {
 e && "resume" == e.socket_status$string && (l = setTimeout(r, 1e3));
 var t = s();
-if (t && t !== h) {
+if (t && t !== d) {
 u.update({
 friendly_connection_status$string: t
 });
-h = t;
+d = t;
 }
 }
 function s() {
-var e = +new Date(), t = d.getValue(), n = f.getValue(), i = p.getValue(), o = m.getValue(), r = g.getValue(), s = _.getValue();
+var e = +new Date(), t = f.getValue(), n = h.getValue(), i = p.getValue(), o = m.getValue(), r = g.getValue(), s = _.getValue();
 if ((n || t || i) && "disconnecting" !== i) {
 if ("break" == n) {
 if (w.indexOf(t) > -1) return "closed";
@@ -1957,10 +1846,10 @@ return (null === n || "reconnect" == n || "resume" == n && e - o >= 1e3) && "rea
 }
 }
 function a() {
-var e = d.getValue(), t = v.getValue(), n = p.getValue(), i = y.getValue();
+var e = f.getValue(), t = v.getValue(), n = p.getValue(), i = y.getValue();
 return "banned" === t ? "banned" : "disconnected" === n ? "failed" === i ? "authentication_failed" : "logged_out" : "idle_disconnect" === e ? "idle_disconnect" : "error" === e || "shutdown" === e ? "server_error" : "unknown";
 }
-var c, u, l, h, d, f, p, m, g, _, v, y, w = [ "idle_disconnect", "shutdown", "error" ], b = {
+var c, u, l, d, f, h, p, m, g, _, v, y, w = [ "idle_disconnect", "shutdown", "error" ], b = {
 init: n,
 reset: o,
 destroy: i,
@@ -1986,12 +1875,12 @@ r.write({
 active$int: +new Date()
 });
 }
-var r, s = n(0), a = n(24), c = {
+var r, s = n(0), a = n(20), c = {
 init: i
 }, u = 3e5;
 e.exports = c;
 }, function(e, t, n) {
-var i = n(12), o = {
+var i = n(11), o = {
 livechat: {
 timestamp$int: +new Date(),
 settings: {
@@ -2191,17 +2080,38 @@ card_form: {}
 }
 };
 e.exports = o;
+}, function(e, t) {
+function n(e) {
+"use strict";
+if (null == this) throw new TypeError();
+var t = Object(this), n = t.length >>> 0;
+if (0 === n) return -1;
+var i = 0;
+if (arguments.length > 0) {
+i = Number(arguments[1]);
+i != i ? i = 0 : 0 != i && i != 1 / 0 && i != -1 / 0 && (i = (i > 0 || -1) * Math.floor(Math.abs(i)));
+}
+if (i >= n) return -1;
+for (var o = i >= 0 ? i : Math.max(n - Math.abs(i), 0); o < n; o++) if (o in t && t[o] === e) return o;
+return -1;
+}
+function i(e, t, n) {
+return o.call(t, e, n);
+}
+var o = Array.prototype.indexOf;
+"function" == typeof o && /\[native code\]/.test(o.toString()) || (o = n);
+e.exports = i;
 }, function(e, t, n) {
-var i = n(12), o = n(9), r = n(1), s = i("File size too large. Maximum limit is <size>."), a = i("The file you are trying to send is not supported."), c = i("File sending is temporarily disabled. Please try again later."), u = i("<size> bytes"), l = i("<size> KB"), h = i("<size> MB"), d = {};
-d.ERR_SIZE = "TOO_LARGE";
-d.ERR_FORMAT = "ILLEGAL_TYPE";
-d.ERR_DISABLED = "FILE_UPLOADS_TEMPORARILY_DISABLED";
-var f = /^(x-|vnd\.)/i, p = [ "png", "jpg", "jpeg", "gif", "txt", "pdf" ], m = {}, g = i("Failed to send. Please try again.");
-m[d.ERR_SIZE] = s;
-m[d.ERR_FORMAT] = a;
-m[d.ERR_DISABLED] = c;
-d.prettySize = function() {
-var e = [ u, l, h ], t = [ 0, 1, 2 ];
+var i = n(11), o = n(27), r = n(1), s = i("File size too large. Maximum limit is <size>."), a = i("The file you are trying to send is not supported."), c = i("File sending is temporarily disabled. Please try again later."), u = i("<size> bytes"), l = i("<size> KB"), d = i("<size> MB"), f = {};
+f.ERR_SIZE = "TOO_LARGE";
+f.ERR_FORMAT = "ILLEGAL_TYPE";
+f.ERR_DISABLED = "FILE_UPLOADS_TEMPORARILY_DISABLED";
+var h = /^(x-|vnd\.)/i, p = [ "png", "jpg", "jpeg", "gif", "txt", "pdf" ], m = {}, g = i("Failed to send. Please try again.");
+m[f.ERR_SIZE] = s;
+m[f.ERR_FORMAT] = a;
+m[f.ERR_DISABLED] = c;
+f.prettySize = function() {
+var e = [ u, l, d ], t = [ 0, 1, 2 ];
 return function(n, i) {
 n = Math.max(parseInt(n, 10) || 0, 0);
 i = i || {};
@@ -2211,50 +2121,53 @@ if (n >= o) return e[s].replace("<size>", (n / o).toFixed(t[s]));
 }
 };
 }();
-d.prettyType = function(e, t, n) {
+f.prettyType = function(e, t, n) {
 n = n || window.Infinity;
 var i = e.split("/")[1];
-i = i && i.replace(f, "");
+i = i && i.replace(h, "");
 if (i && i.length < n) return i.toLowerCase();
 i = t.split(".").pop();
 return (i || "").toLowerCase();
 };
-d.isValidType = function(e, t) {
+f.isValidType = function(e, t) {
 if (e) {
 t = t || p;
 var n = e.substr(e.lastIndexOf(".") + 1).toLowerCase();
 return -1 !== o(n, t);
 }
 };
-d.prettyError = function(e, t) {
+f.prettyError = function(e, t) {
 var n = e in m ? m[e] : g;
-r(t) || (n = n.replace("<size>", d.prettySize(t || 5e6)));
+r(t) || (n = n.replace("<size>", f.prettySize(t || 5e6)));
 return n;
 };
-d.blobToFile = function(e, t, n) {
+f.blobToFile = function(e, t, n) {
 e.lastModifiedDate = new Date();
 e.name = t;
 return new window.File([ e ], t, {
 type: n
 });
 };
-d.getExtension = function(e) {
+f.getExtension = function(e) {
 var t = e.lastIndexOf(".");
 return -1 === t ? null : e.substr(t + 1).toLowerCase();
 };
-e.exports = d;
+e.exports = f;
 }, function(e, t, n) {
 function i(e, t) {
-h = e;
-d = t;
-h.$("livechat").$("channel").$("department_id$int").on("value", function(e) {
-e && (f = e);
+f = e;
+h = t;
+f.$("livechat").$("channel").$("department_id$int").on("value", function(e) {
+e && (p = e);
 });
 }
-function o(e, t, n) {
-var i = parseInt(t, 10) || parseInt(d.getServerTime().toFixed(0), 10), o = i + "", r = h.$("livechat").$("profile"), s = f, a = (e.msg || "") + "";
+function o() {
+p = void 0;
+}
+function r(e, t, n) {
+var i = parseInt(t, 10) || parseInt(h.getServerTime().toFixed(0), 10), o = i + "", r = f.$("livechat").$("profile"), s = p, a = (e.msg || "") + "";
 "department" in e && (s = e.department);
-h.$("livechat").$("channel").$("log").$(o).write({
+f.$("livechat").$("channel").$("log").$(o).write({
 timestamp$int: i,
 type$string: "chat.msg",
 msg$string: a,
@@ -2265,12 +2178,12 @@ unverified$bool: !0,
 __client$bool: !0
 }, n);
 }
-function r(e, t) {
-var n = parseInt(t, 10) || parseInt(d.getServerTime().toFixed(0), 10), i = n + "";
-h.$("livechat").$("channel").$("log").$(i).write({
+function s(e, t) {
+var n = parseInt(t, 10) || parseInt(h.getServerTime().toFixed(0), 10), i = n + "";
+f.$("livechat").$("channel").$("log").$(i).write({
 timestamp$int: n,
-nick$string: h.$("livechat").$("profile").$("nick$string").getValue() || "",
-display_name$string: h.$("livechat").$("profile").$("display_name$string").getValue() || "",
+nick$string: f.$("livechat").$("profile").$("nick$string").getValue() || "",
+display_name$string: f.$("livechat").$("profile").$("display_name$string").getValue() || "",
 type$string: "chat.file.upload",
 file_name$string: e.file_name || "",
 file_type$string: e.file_type || "",
@@ -2280,21 +2193,21 @@ __client$bool: !0
 });
 return n;
 }
-function s(e, t) {
+function a(e, t) {
 function n(e) {
-if ("ok" !== e.raw.__status) return t(new window.Error(l(e.raw.error)));
+if ("ok" !== e.raw.__status) return t(new window.Error(d(e.raw.error)));
 if (!e.raw.data || "chat.file" !== e.raw.data.type) return t(new window.Error("INTERNAL_ERROR"));
-t(null, w.pick(e.raw.data, [ "mime_type", "name", "size", "url", "metadata" ]));
+t(null, b.pick(e.raw.data, [ "mime_type", "name", "size", "url", "metadata" ]));
 }
-var i = E._validateAndPrepareData([ e ]);
-t = g.once(t);
-if (p(i)) m(function() {
+var i = k._validateAndPrepareData([ e ]);
+t = _.once(t);
+if (m(i)) g(function() {
 t(new window.Error(i));
 }); else {
-var o = d.registerCallback(n), r = "https://" + i.host + _.CALLBACK_FILE_UPLOAD_PATH, s = {
-ts: parseInt(d.getServerTime().toFixed(0), 10),
+var o = h.registerCallback(n), r = "https://" + i.host + v.CALLBACK_FILE_UPLOAD_PATH, s = {
+ts: parseInt(h.getServerTime().toFixed(0), 10),
 __messageID: o,
-__socketID: d.getSocketID()
+__socketID: h.getSocketID()
 }, a = {
 "X-Zopim-MID": i.mid,
 "X-Zopim-UID": i.uid
@@ -2308,44 +2221,44 @@ var e;
 try {
 e = JSON.parse(this.responseText);
 } catch (e) {}
-t(e && e.error ? new window.Error(l(e.error)) : new window.Error("INTERNAL_ERROR"));
+t(e && e.error ? new window.Error(d(e.error)) : new window.Error("INTERNAL_ERROR"));
 }
 }
 };
-E._uploadFiles(i.form_data, r, s, a, c);
+k._uploadFiles(i.form_data, r, s, a, c);
 }
 }
-function a(e, t) {
-var n = E._validateAndPrepareData(e);
-if (p(n)) return n;
-var i = r({
+function c(e, t) {
+var n = k._validateAndPrepareData(e);
+if (m(n)) return n;
+var i = s({
 file_name: n.name,
 file_type: n.type,
 file_size: n.size
-}, t), o = "https://" + n.host + _.FILE_UPLOAD_PATH, s = {
+}, t), o = "https://" + n.host + v.FILE_UPLOAD_PATH, r = {
 ts: i
 }, a = {
 "X-Zopim-MID": n.mid,
 "X-Zopim-UID": n.uid
 };
-E._uploadFiles(n.form_data, o, s, a);
+k._uploadFiles(n.form_data, o, r, a);
 }
-function c(e) {
+function u(e) {
 if (!window.FormData) return "NOT_SUPPORTED";
-var t = h.$("livechat"), n = t.$("settings").$("file_sending"), i = t.$("settings").$("package"), o = n.$("enabled$bool").getValue(), r = (n.$("allowed_extensions$string").getValue() || "").trim().replace(/\s*,\s*/g, ",").split(","), s = i.$("color_customization_enabled$int").getValue() || i.$("widget_customization_enabled$int").getValue(), a = t.$("profile").$("mid$string").getValue(), c = t.$("profile").$("uid$string").getValue(), u = d.getHost(), l = new window.FormData(), f = [], p = [], m = 0;
+var t = f.$("livechat"), n = t.$("settings").$("file_sending"), i = t.$("settings").$("package"), o = n.$("enabled$bool").getValue(), r = (n.$("allowed_extensions$string").getValue() || "").trim().replace(/\s*,\s*/g, ",").split(","), s = i.$("color_customization_enabled$int").getValue() || i.$("widget_customization_enabled$int").getValue(), a = t.$("profile").$("mid$string").getValue(), c = t.$("profile").$("uid$string").getValue(), u = h.getHost(), l = new window.FormData(), d = [], p = [], m = 0;
 if (!u) return "CONN_ERROR";
 if (!s) return "INVALID_PLAN";
 if (!o) return "NOT_ALLOWED";
-for (var g = 0, y = e.length; g < y; g++) {
-if (!v.isValidType(e[g].name, r)) return "INVALID_EXTENSION";
-f.push(e[g].name);
+for (var g = 0, _ = e.length; g < _; g++) {
+if (!y.isValidType(e[g].name, r)) return "INVALID_EXTENSION";
+d.push(e[g].name);
 p.push(e[g].type);
 m += e[g].size || 0;
 l.append("file_" + e[g].name, e[g]);
 }
-return m > _.FILE_UPLOAD_MAX ? "EXCEED_SIZE_LIMIT" : {
+return m > v.FILE_UPLOAD_MAX ? "EXCEED_SIZE_LIMIT" : {
 form_data: l,
-name: f.join(", "),
+name: d.join(", "),
 type: p.join(", "),
 size: m,
 host: u,
@@ -2353,19 +2266,19 @@ mid: a,
 uid: c
 };
 }
-function u(e, t, n, i, o) {
-var r = new window.XMLHttpRequest(), s = t + (Object.keys(n).length ? "?" + y.buildQuery(n) : "");
+function l(e, t, n, i, o) {
+var r = new window.XMLHttpRequest(), s = t + (Object.keys(n).length ? "?" + w.buildQuery(n) : "");
 if (r.upload) {
 r.open("POST", s, !0);
-for (var a in i) i.hasOwnProperty(a) && r.setRequestHeader(a, i[a]);
-for (var c in o) o.hasOwnProperty(c) && r.addEventListener(c, o[c]);
+for (var a in i) Object.prototype.hasOwnProperty.call(i, a) && r.setRequestHeader(a, i[a]);
+for (var c in o) Object.prototype.hasOwnProperty.call(o, c) && r.addEventListener(c, o[c]);
 r.send(e);
 }
 }
-function l(e) {
-return $[e] || "UNKNOWN_ERROR";
+function d(e) {
+return E[e] || "UNKNOWN_ERROR";
 }
-var h, d, f, p = n(14), m = n(20), g = n(8), _ = n(4), v = n(30), y = n(10), w = n(6), b = {
+var f, h, p, m = n(12), g = n(17), _ = n(9), v = n(3), y = n(28), w = n(8), b = n(6), $ = {
 NOT_SUPPORTED: "NOT_SUPPORTED",
 NOT_ALLOWED: "NOT_ALLOWED",
 CONN_ERROR: "CONN_ERROR",
@@ -2374,7 +2287,7 @@ INVALID_PLAN: "INVALID_PLAN",
 EXCEED_SIZE_LIMIT: "EXCEED_SIZE_LIMIT",
 INTERNAL_ERROR: "INTERNAL_ERROR",
 UNKNOWN_ERROR: "UNKNOWN_ERROR"
-}, $ = {
+}, E = {
 TOO_LARGE: "EXCEED_SIZE_LIMIT",
 ILLEGAL_TYPE: "INVALID_EXTENSION",
 NO_SESSION: "INTERNAL_ERROR",
@@ -2384,16 +2297,17 @@ S3_UPLOAD_ERROR: "INTERNAL_ERROR",
 NO_GATES: "INTERNAL_ERROR",
 FILE_UPLOADS_DISABLED: "NOT_ALLOWED",
 FILE_UPLOADS_TEMPORARILY_DISABLED: "INVALID_PLAN"
-}, E = {
-FILE_SENDING_ERRORS: b,
+}, k = {
+FILE_SENDING_ERRORS: $,
 init: i,
-sendChatMsg: o,
-sendFiles: a,
-sendFileWithCallback: s,
-_validateAndPrepareData: c,
-_uploadFiles: u
+sendChatMsg: r,
+sendFiles: c,
+sendFileWithCallback: a,
+clearChatDepartmentID: o,
+_validateAndPrepareData: u,
+_uploadFiles: l
 };
-e.exports = E;
+e.exports = k;
 }, function(e, t) {
 var n = {};
 n.SECOND = 1e3;
@@ -2401,247 +2315,6 @@ n.MINUTE = 60 * n.SECOND;
 n.HOUR = 60 * n.MINUTE;
 n.DAY = 24 * n.HOUR;
 n.WEEK = 7 * n.DAY;
-e.exports = n;
-}, function(e, t, n) {
-function i(e, t, n, i, o, r, c, u) {
-this.CLUSTERS = e.CLUSTERS;
-this.WEIGHTS = e.WEIGHTS;
-this.NEAR_MAP = e.NEAR_MAP;
-this.FALLBACKS = e.FALLBACKS;
-this.geo_code = n || "geo";
-this.default_domain = t;
-this.supported_domains = (u || []).concat(this.default_domain);
-var l = s.map(this.supported_domains, a.escape);
-this.supported_proxy_re = new RegExp("^[a-z][a-z0-9_-]*(\\.[a-z][a-z0-9_-]*)*(" + l.join("|") + ")(:\\d+)?$", "i");
-this.cluster_hosts = [];
-this.host_list = [];
-this.host_index = 0;
-this.last_connected_host = o && this.getValidatedHost(o);
-this.override_proxy = i && this.getValidatedHost(i);
-this.num_primary_hosts = r || 0;
-this.num_fallback_hosts = c || 0;
-this.init();
-}
-var o = n(15), r = n(9), s = n(23), a = n(13), c = /^([a-z][a-z0-9_-]*)(:\d+)?$/i, u = i.prototype;
-u.init = function() {
-var e = this.geo_code && this.geo_code in this.NEAR_MAP ? this.NEAR_MAP[this.geo_code] : this.NEAR_MAP.DEFAULT;
-if (!e) throw "Error: no cluster code found for " + this.geo_code;
-if (e in this.CLUSTERS) this._growClusterHosts(e, this.num_primary_hosts); else if (!this.override_proxy && !this.last_connected_host) throw "Error: " + e + " has no cluster definition";
-if (e in this.FALLBACKS) for (var t = this.FALLBACKS[e], n = 0, i = t.length; n < i; n++) {
-var o = t[n];
-o in this.CLUSTERS && this._growClusterHosts(o, this.num_fallback_hosts);
-}
-this._makeHostList();
-};
-u._verifyHostInGeoConfig = function(e) {
-var t = this;
-return Object.keys(t.CLUSTERS).some(function(n) {
-return t.CLUSTERS[n].some(function(n) {
-return e === t.getValidatedHost(n);
-});
-});
-};
-u._growClusterHosts = function(e, t) {
-var n = this.CLUSTERS[e], i = this.getWeights(e);
-s.shuffle(n, i);
-t && (n = n.slice(0, t));
-this.cluster_hosts = this.cluster_hosts.concat(n);
-};
-u.getWeights = function(e) {
-if (!(e in this.CLUSTERS)) return [];
-var t, n = this.CLUSTERS[e], i = n.length, r = new Array(i);
-if (this.WEIGHTS && this.WEIGHTS[e]) {
-var s = this.WEIGHTS[e];
-for (t = i; t--; ) {
-var a = n[t];
-r[t] = o(s[a]) ? s[a] : 1;
-}
-} else for (t = i; t--; ) r[t] = 1;
-return r;
-};
-u.getValidatedHost = function(e, t) {
-if (e) {
-if (!t && c.test(e)) return this._expandSimpleHost(e);
-if (this.supported_proxy_re.test(e)) return e;
-}
-return !1;
-};
-u._expandSimpleHost = function(e) {
-return e.replace(c, "$1" + this.default_domain + "$2");
-};
-u._makeHostList = function() {
-var e = this, t = s.map(this.cluster_hosts, function(t) {
-return e._expandSimpleHost(t);
-}), n = [];
-this.override_proxy && n.push(this.override_proxy);
-this.last_connected_host && this.last_connected_host !== this.override_proxy && this._verifyHostInGeoConfig(this.last_connected_host) && n.push(this.last_connected_host);
-t = t.filter(function(e) {
-return -1 === r(e, n);
-});
-this.host_list = n.concat(t);
-this.host_index = 0;
-};
-u.getHostList = function() {
-return this.host_list;
-};
-u.getNextHost = function() {
-return this.host_index >= this.host_list.length ? "" : this.host_list[this.host_index++];
-};
-u.hasNext = function() {
-return this.host_index < this.host_list.length;
-};
-u.rewind = function() {
-this.host_index = 0;
-};
-u.pushHostToLast = function(e) {
-var t, n = this.getValidatedHost(e), i = r(n, this.host_list);
-if (-1 !== i) {
-t = this.host_list.splice(i, 1);
-this.host_list = this.host_list.concat(t);
-}
-};
-e.exports = i;
-}, function(e, t, n) {
-function i(e) {
-window.__$__GEO = e;
-}
-function o(e, t) {
-this.clusters_config = e;
-this.setGeoCode("geo" === a ? c : a);
-try {
-if (t.length <= 0) throw "SSI cluster definition not found";
-if ("<" == t.charAt(0)) throw "SSI not processed";
-this.clusters_config = JSON.parse(t);
-} catch (e) {}
-}
-var r = n(33), s = n(25), a = '<!--# echo var="http_cf_ipcountry" default="geo" -->'.toUpperCase(), c = '<!--# echo var="geoip_country_code" default="geo" -->'.toUpperCase(), u = [ ".zopim.net", ".zopim.org", ".zdch.at" ];
-"<" == a.charAt(0) && (a = "geo");
-"<" == c.charAt(0) && (c = "geo");
-o.SUPPORTED_DOMAINS = u;
-var l = o.prototype;
-l.getGeoCode = function() {
-return this.countryCode;
-};
-l.setGeoCode = function(e) {
-if (e && "--" !== e) {
-this.countryCode = e;
-i(e);
-}
-};
-l.updateClustersConfig = function(e) {
-try {
-s.extend(this.clusters_config, JSON.parse(e));
-} catch (e) {
-window.console && window.console.log("Unable to process update");
-}
-};
-l.getGeoAccess = function(e, t, n, i, o, s) {
-return new r(this.clusters_config, o || ".zopim.com", this.countryCode, e, t, n, i, s || u);
-};
-e.exports = o;
-}, function(e, t) {
-var n = {
-CLUSTERS: {
-US: [ "us08", "us10", "us12", "us14", "us16", "us18", "us20", "us22", "us24", "us26", "us28", "us30", "us32", "us34", "us36", "us38", "us40", "us42", "us44", "us46" ],
-DE: [ "de04", "de06", "de08", "de10", "de12", "ie02", "ie04", "ie06", "ie08", "ie10", "ie12", "ie14", "ie16", "de14", "de16", "de18", "de20", "ie18", "ie20", "ie22", "ie24", "de22", "de24", "de26", "de28" ],
-SG: [ "sg06", "sg08", "sg10", "sg12", "sg14", "sg16", "sg18", "sg20" ],
-JP: [ "jp02", "jp04", "jp06", "jp08" ],
-AU: [ "au02", "au04" ],
-BR: [ "br02", "br04", "br06", "br08", "br10", "br12" ]
-},
-FALLBACKS: {
-US: [ "DE" ],
-DE: [ "US" ],
-SG: [ "US" ],
-JP: [ "US" ],
-AU: [ "SG", "US" ],
-BR: [ "US" ]
-},
-NEAR_MAP: {
-AL: "DE",
-AD: "DE",
-AM: "DE",
-AT: "DE",
-BY: "DE",
-BE: "DE",
-BA: "DE",
-BG: "DE",
-CH: "DE",
-CY: "DE",
-CZ: "DE",
-DE: "DE",
-DK: "DE",
-EE: "DE",
-ES: "DE",
-EU: "DE",
-FO: "DE",
-FI: "DE",
-FR: "DE",
-GB: "DE",
-GE: "DE",
-GI: "DE",
-GR: "DE",
-HU: "DE",
-HR: "DE",
-IE: "DE",
-IM: "DE",
-IS: "DE",
-IT: "DE",
-LT: "DE",
-LU: "DE",
-LV: "DE",
-MC: "DE",
-MK: "DE",
-MT: "DE",
-NO: "DE",
-NL: "DE",
-PK: "DE",
-PO: "DE",
-PT: "DE",
-RO: "DE",
-SA: "DE",
-SE: "DE",
-SI: "DE",
-SK: "DE",
-SM: "DE",
-TR: "DE",
-UA: "DE",
-VA: "DE",
-ZA: "DE",
-NG: "DE",
-MA: "DE",
-AP: "SG",
-BD: "SG",
-BN: "SG",
-CN: "SG",
-ID: "SG",
-IN: "SG",
-LA: "SG",
-KH: "SG",
-LK: "SG",
-MM: "SG",
-MY: "SG",
-SG: "SG",
-TH: "SG",
-VN: "SG",
-AU: "AU",
-NZ: "AU",
-HK: "JP",
-KR: "JP",
-JP: "JP",
-PH: "US",
-RU: "JP",
-TW: "JP",
-AR: "BR",
-BO: "BR",
-BR: "BR",
-CL: "BR",
-PE: "BR",
-PY: "BR",
-UY: "BR",
-DEFAULT: "US"
-}
-};
 e.exports = n;
 }, function(e, t, n) {
 function i(e) {
@@ -2666,7 +2339,7 @@ this.longpoll.load(this.url + [ "c", +new Date() ].join("/"));
 }
 var o = n(0), r = i;
 i.protocol = "xdds";
-var s = n(21);
+var s = n(18);
 i.prototype.process_data = function(e) {
 if (e && !this._abort) {
 !this.ts && this.onopen && this.onopen();
@@ -2762,7 +2435,7 @@ n.width = n.height = 0;
 n.overflow = "hidden";
 return t;
 }
-var r = n(3), s = window.postMessage ? !r.isAndroid && i : null;
+var r = n(2), s = window.postMessage ? !r.isAndroid && i : null;
 i.protocol = "spm";
 i.prototype.send = function(e) {
 this.iframe.contentWindow.postMessage(e, this.src);
@@ -2819,7 +2492,7 @@ s.abort("close");
 c("CXHR connecting to: " + this.url);
 i.send();
 }
-var o = n(3), r = o.isIE ? window.XDomainRequest : !o.isOpera && !o.isAndroid && window.XMLHttpRequest, s = r ? i : null, a = o.isIE ? "//" : "https://";
+var o = n(2), r = o.isIE ? window.XDomainRequest : !o.isOpera && !o.isAndroid && window.XMLHttpRequest, s = r ? i : null, a = o.isIE ? "//" : "https://";
 i.protocol = "cxhr";
 i.prototype.send = function(e) {
 function t() {
@@ -2870,7 +2543,7 @@ this.host = e;
 this.ns = t;
 this.path = "/" + [ "s", this.ns, this.provider.protocol, this.id ].join("/");
 this.url = this.host + this.path + "/";
-this.status = "connecting";
+this.status = window.navigator && !1 === window.navigator.onLine ? "offline" : "connecting";
 this.connected = !1;
 this.quality = 0;
 this.rtt = o.INITIAL_RTT;
@@ -2909,7 +2582,6 @@ this.glitch_timer = this.reconnect_timer = null;
 this.reconnect_delay = o.RECONNECT_DELAY_MS * (.2 * Math.random() + .8);
 this.keep_alive_interval = 15e3;
 this.data_packet_queue = new c(this);
-this.connect();
 var s = this;
 this.onoffline = function() {
 i.prototype.onoffline.call(s);
@@ -2919,6 +2591,7 @@ i.prototype.ononline.call(s);
 };
 u.window.on("offline", this.onoffline);
 u.window.on("online", this.ononline);
+"connecting" === this.status && this.connect();
 }
 function o() {
 var e = w, t = new Date(), n = t.getUTCFullYear() - 2e3, i = t.getUTCMonth() + 1, o = t.getUTCDate(), r = t.getUTCHours(), s = t.getUTCMinutes(), a = t.getUTCSeconds(), c = t.getUTCMilliseconds();
@@ -2947,7 +2620,7 @@ this.last_work_finished_time = 0;
 this.work_timer = null;
 this.processing = !1;
 }
-var u = n(0), l = n(11), h = n(39), d = n(38), f = n(37), p = n(36), m = f || h || d || p, g = p, _ = {
+var u = n(0), l = n(10), d = n(34), f = n(33), h = n(32), p = n(31), m = h || d || f || p, g = p, _ = {
 INITIAL_RTT: 1e3,
 RECONNECT_DELAY_MS: 3e4,
 FAST_RECONNECT_MS: 100,
@@ -2957,7 +2630,7 @@ MAX_NO_WORK_TIME_MS: 15,
 PREFERRED_PROVIDER: void 0
 };
 i.providers = {};
-[ h, d, f, p ].forEach(function(e) {
+[ d, f, h, p ].forEach(function(e) {
 e && (i.providers[e.protocol] = e);
 });
 i.available = function() {
@@ -3072,8 +2745,8 @@ u.window.un("online", this.ononline);
 };
 i.prototype.hibernate = function() {};
 i.prototype.onoffline = function() {
-this.broken_reason = "OFFLINE";
 this.debug("onoffline");
+this.broken_reason = "OFFLINE";
 this.close(!0);
 };
 i.prototype.ononline = function() {
@@ -3198,10 +2871,13 @@ var e = this, t = this.options;
 this.debug("_onclose");
 this.disconnects++;
 this.broken_reason = "HANGUP";
-if (this.connected) this.reconnect_timer = setTimeout(function() {
+if (this.connected) {
+clearTimeout(this.reconnect_timer);
+this.reconnect_timer = setTimeout(function() {
 e.reconnect_timer = null;
 e.connect(!0);
-}, t.FAST_RECONNECT_MS); else if (!this.connections && 1 == this.connect_attempts) {
+}, t.FAST_RECONNECT_MS);
+} else if (!this.connections && 1 == this.connect_attempts) {
 clearTimeout(this.reconnect_timer);
 this.reconnect_timer = setTimeout(function() {
 e.reconnect_timer = null;
@@ -3319,25 +2995,63 @@ s.work();
 this.last_work_finished_time = Date.now();
 };
 e.exports = i;
+}, function(e, t) {
+function n(e) {
+return Date.now() - (e ? e.clock_skew : 0);
+}
+function i(e) {
+return e ? {
+connect_attempts: e.connect_attempts,
+connections: e.connections,
+disconnects: e.disconnects,
+timeout_server: e.timeout_server,
+timeout_response_soft: e.timeout_response_soft,
+timeout_response_hard: e.timeout_response_hard,
+sent_bytes: e.sent_bytes,
+recv_bytes: e.recv_bytes,
+sent_messages: e.sent_messages,
+recv_messages: e.recv_messages,
+sent_frames: e.sent_frames,
+recv_frames: e.recv_frames,
+lost_frames: e.lost_frames,
+ooo_frames: e.ooo_frames,
+bytes_at_connect: e.bytes_at_connect,
+rtt: e.rtt,
+clock_skew: e.clock_skew,
+reconnect_delay: e.reconnect_delay,
+quality: e.quality,
+host: e.host,
+status: e.status,
+last_frame_time: e.last_frame_time,
+local_time: Date.now()
+} : {
+status: "not connected"
+};
+}
+var o = {
+getServerTime: n,
+getConnectionStats: i
+};
+e.exports = o;
 }, function(e, t, n) {
 function i(e) {
 return function() {
 try {
 var t = Array.prototype.slice.call(arguments, 0);
 t.unshift(r);
-h.appendChild(r);
+d.appendChild(r);
 r.addBehavior("#default#userData");
 r.load(l);
 var n = e.apply(a, t);
-h.removeChild(r);
+d.removeChild(r);
 return n;
 } catch (e) {}
 };
 }
 function o(e) {
-return e.replace(f, "___");
+return e.replace(h, "___");
 }
-var r, s = n(11), a = {}, c = window, u = c.document, l = "localStorage";
+var r, s = n(10), a = {}, c = window, u = c.document, l = "localStorage";
 a.disabled = !1;
 a.set = function() {};
 a.get = function() {};
@@ -3394,19 +3108,19 @@ e[n] = a.get(n);
 return e;
 };
 } else if (u.documentElement.addBehavior) {
-var h, d;
+var d, f;
 try {
-d = new window.ActiveXObject("htmlfile");
-d.open();
-d.write('<script>document.w=window</script><iframe src="/favicon.ico"></frame>');
-d.close();
-h = d.w.frames[0].document;
-r = h.createElement("div");
+f = new window.ActiveXObject("htmlfile");
+f.open();
+f.write('<script>document.w=window</script><iframe src="/favicon.ico"></frame>');
+f.close();
+d = f.w.frames[0].document;
+r = d.createElement("div");
 } catch (e) {
 r = u.createElement("div");
-h = u.body;
+d = u.body;
 }
-var f = new RegExp("[!\"#$%&'()*+,/\\\\:;<=>?@[\\]^`{|}~]", "g");
+var h = new RegExp("[!\"#$%&'()*+,/\\\\:;<=>?@[\\]^`{|}~]", "g");
 a.set = i(function(e, t, n) {
 t = o(t);
 if (void 0 === n) return a.remove(t);
@@ -3454,373 +3168,291 @@ return !!e && "false" != e;
 e.exports = n;
 }, function(e, t, n) {
 function i(e) {
-function t() {
-if ("prerender" != document.visibilityState) {
-document.removeEventListener("visibilitychange", t);
-Pe.connect();
-}
-}
-se = e.isCookieDenied;
-ae = e.overrideProxy;
-ce = e.source;
-ue = e.lastHost;
-le = e.source_ver;
-G = e.activity_window || window;
-B = G.document;
+ie = e.isCookieDenied;
+G = fe.getMediatorHost(e.overrideProxy);
+oe = e.source;
+re = e.source_ver;
+se = e.gd_compatible;
+K = e.activity_window || window;
+F = K.document;
 W = e.root;
-J = W.$("tmp").$("api_settings");
-Q = W.$("tmp").$("server_settings");
-ee = W.$("livechat").$("settings").$("cached$bool");
-Y = W.$("connection");
-te = Y.$("server_retired$bool");
-ie = Y.$("server_ready$bool");
-ie.bindValue(a);
-te.bindValue(s);
-Z = W.$("livechat").$("ui").$("mockup$bool").getValue();
-if (Z) Y.$("status$string").update("reattached"); else {
-W.$("livechat").$("profile").bindValue(r);
-Y.$("status$string").bindValue(o);
-Y.$("socket_status$string").bindValue(x);
-W.bindWrite(P);
-Y.$("reconnect$bool").bindValue(g);
-if (window.__z_sdk) F = !0; else {
-F = !1;
-"visibilityState" in document && "prerender" == document.visibilityState ? document.addEventListener("visibilitychange", t) : Pe.connect();
+X = W.$("tmp").$("api_settings");
+Z = W.$("tmp").$("server_settings");
+Q = W.$("livechat").$("settings").$("cached$bool");
+H = W.$("connection");
+J = H.$("server_retired$bool");
+te = H.$("server_ready$bool");
+te.bindValue(c);
+J.bindValue(a);
+Y = W.$("livechat").$("ui").$("mockup$bool").getValue();
+if (Y) H.$("status$string").update("reattached"); else {
+W.$("livechat").$("profile").bindValue(s);
+H.$("status$string").bindValue(r);
+H.$("socket_status$string").bindValue(L);
+W.bindWrite(D);
+H.$("reconnect$bool").bindValue(g);
+if (window.__z_sdk) q = !0; else {
+q = !1;
+"visibilityState" in document && "prerender" == document.visibilityState ? document.addEventListener("visibilitychange", o) : Oe.connect();
 }
 }
 }
-function o(e) {
-Se = "reattached" == e;
-if (Se) {
-Y.update({
-client_reattached_timestamp$int: +new Date()
-});
-P();
+function o() {
+if ("prerender" != document.visibilityState) {
+document.removeEventListener("visibilitychange", o);
+Oe.connect();
 }
-Se && !1 === F && S();
-if ("idle_disconnect" == e || "shutdown" == e || "error" == e) {
-var t = W.$("livechat").$("account").$("status$string").getValue(), n = W.$("connection").$("backoff"), i = n.$("active$int").getValue() || 0, o = n.$("max_seconds$int").getValue();
-"invalid_account_key" == t ? ye.warnBadEmbed() : "widget_v2" == ce && "shutdown" == e && i && o && p(o);
-d();
-}
-x();
 }
 function r(e) {
-e && (se() || ge.IS_POPOUT || e.mid$string && _e.setIdentity(e.mid$string));
+we = "reattached" == e;
+if (we) {
+H.update({
+client_reattached_timestamp$int: +new Date()
+});
+D();
+}
+we && !1 === q && x();
+if ("idle_disconnect" == e || "shutdown" == e || "error" == e) {
+var t = W.$("livechat").$("account").$("status$string").getValue(), n = W.$("connection").$("backoff"), i = n.$("active$int").getValue() || 0, o = n.$("max_seconds$int").getValue();
+"invalid_account_key" == t ? me.warnBadEmbed() : "widget_v2" == oe && "shutdown" == e && i && o && p(o);
+f();
+}
+L();
 }
 function s(e) {
-ne = !0 === e;
+e && (ie() || fe.IS_POPOUT || e.mid$string && he.setIdentity(e.mid$string));
 }
 function a(e) {
-oe = !1 !== e;
-if (oe) {
-Ce = !1;
-c();
+ee = !0 === e;
+}
+function c(e) {
+ne = !1 !== e;
+if (ne) {
+Ee = !1;
+u();
 }
 }
-function c() {
-for (var e = 0, t = Re.length; e < t; e++) {
-var n = Re[e];
-de(n) && n();
+function u() {
+for (var e = 0, t = $e.length; e < t; e++) {
+var n = $e[e];
+ce(n) && n();
 }
-Re = [];
+$e = [];
 }
-function u(e) {
-if (!oe || ne) {
-Y.update({
+function l(e) {
+if (!ne || ee) {
+H.update({
 server_ready$bool: !1
 });
-Re.push(e);
-if (!Ce) {
-Ce = !0;
-X.reconnect();
+$e.push(e);
+if (!Ee) {
+Ee = !0;
+B.reconnect();
 }
 } else e();
 }
-function l(e) {
-X && X.send(e);
-}
-function h(e) {
-for (var t = -1, n = 0; n < Oe.length; n++) if (Oe[n].socket == e) {
-t = n;
-break;
-}
-if (-1 !== t) {
-var i = Oe[t].expiryTimer;
-e.close();
-clearTimeout(i);
-}
-}
 function d(e) {
-X && h(X);
-H = !e;
-X = null;
-xe = "";
+B && B.send(e);
 }
-function f() {
-window.clearTimeout(Pe.reconnectTimer);
-d(!0);
-Pe.connect();
+function f(e) {
+B && B.close();
+z = !e;
+B = null;
+}
+function h() {
+window.clearTimeout(Oe.reconnectTimer);
+f(!0);
+Oe.connect();
 }
 function p(e) {
-window.clearTimeout(Pe.reconnectTimer);
-Pe.reconnectTimer = window.setTimeout(function() {
-Pe.reconnect();
+window.clearTimeout(Oe.reconnectTimer);
+Oe.reconnectTimer = window.setTimeout(function() {
+Oe.reconnect();
 }, 1e3 * e);
 }
 function m() {
-Y.update({
+H.update({
 status$string: "idle_disconnect"
 });
 }
 function g(e) {
-e && f();
+e && Oe.reconnect();
 }
 function _(e) {
-var t = he || new we(e, "W", null, Te);
-t.on("open", function() {
-b(e, t);
-});
-return t;
+return ae || new _e(e, "W", null, ye);
 }
 function v() {
-var e = y();
-try {
-re = Le.getGeoAccess(ae, e, 3, 2);
-} catch (e) {
-window.console && window.console.log("Unable to compute host list");
-return;
+if (!B && !z) {
+B = _(G);
+B.on("break", b);
+B.on("message", w);
+B.on("reopen", E);
+B.on("resume", $);
+B.on("open", y);
 }
-w(ke);
 }
 function y() {
-return ue || Y.$("server$string").getValue() || "";
-}
-function w(e) {
-function t() {
-clearTimeout(o);
-i.un("close", t);
-w(e);
-}
-if (!X && !H) {
-var n = re.getNextHost();
-if (n) {
-var i = _(n);
-Oe.push({
-socket: i,
-expiryTimer: setTimeout(function() {
-i != X && i.close();
-}, Ae)
-});
-if (re.hasNext()) {
-var o = setTimeout(t, e);
-i.on("close", t);
-}
-}
-}
-}
-function b(e, t) {
-if (!Z) if (X) h(t); else {
-Y.update({
+if (!Y) {
+H.update({
 socket_open_timestamp$int: +new Date(),
 socket_status$string: null,
 disconnection_status$string: null
 });
-xe = e;
-X = t;
-X.on("break", E);
-X.on("message", $);
-X.on("reopen", k);
-X.on("resume", T);
-X.on("error", function() {
-var e = this.connect_attempts, t = this.recv_messages;
-if (e > 3 && 0 == t) {
-d(!0);
-w(ke);
-}
-});
-L();
+T();
 }
 }
-function $(e) {
+function w(e) {
 if (e) {
-if (e.raw && e.raw.__messageID in Ne) {
-var t = Ne[e.raw.__messageID];
-delete Ne[e.raw.__messageID];
+if (e.raw && e.raw.__messageID in Te) {
+var t = Te[e.raw.__messageID];
+delete Te[e.raw.__messageID];
 t(e);
 }
 var n = W;
 if ("update" in e) {
-var i = ye.getValueByReference(e, "livechat.account");
+var i = me.getValueByReference(e, "livechat.account");
 if (i) {
-Q.$("account").update(i);
-ye.fullyExtend(i, J.getValue("account"));
+Z.$("account").update(i);
+me.fullyExtend(i, X.getValue("account"));
 }
-var o = ye.getValueByReference(e, "livechat.settings");
+var o = me.getValueByReference(e, "livechat.settings");
 if (o) {
-Q.$("settings").update(o);
-ye.fullyExtend(o, J.getValue("settings"));
+Z.$("settings").update(o);
+me.fullyExtend(o, X.getValue("settings"));
 }
-var r = ye.getValueByReference(e, "livechat.profile.mid$string");
-if (r && r !== _e.getIdentity()) {
+var r = me.getValueByReference(e, "livechat.profile.mid$string");
+if (r && r !== he.getIdentity()) {
 W.$("livechat").$("channel").update(null);
 W.$("livechat").$("profile").update(null);
 W.$("livechat").$("ui").$("chat_button").$("unread_count$int").update(0);
 }
 e.path && (n = n.descend(e.path));
 n.update(e.update);
-Pe.fire("message", e);
+Oe.fire("message", e);
 }
 }
 }
-function E() {
-Y.update({
+function b() {
+H.update({
 socket_status$string: "break"
 });
 }
-function T() {
-Y.update({
+function $() {
+H.update({
 socket_resume_timestamp$int: +new Date(),
 socket_status$string: "resume"
 });
 }
-function k() {
-Y.update({
+function E() {
+H.update({
 socket_open_timestamp$int: +new Date(),
 socket_status$string: "reconnect"
 });
-Se = !1;
-L();
+we = !1;
+T();
 }
-function A() {
-var e = _e.getIdentity(), t = se(), n = W.$("livechat").$("ui").getValue("mobile$bool") ? "mobile" : "desktop", i = W.$("livechat").$("settings").$("theme").getValue("name$string"), o = {
+function k() {
+var e = he.getIdentity(), t = ie(), n = W.$("livechat").$("ui").getValue("mobile$bool") ? "mobile" : "desktop", i = W.$("livechat").$("settings").$("theme").getValue("name$string"), o = {
 __type: "register",
-accountKey: ge.ACCOUNT_KEY,
+accountKey: fe.ACCOUNT_KEY,
 mID: e,
-ua: G.navigator.userAgent,
+ua: K.navigator.userAgent,
 dt: n,
 theme: i,
 cookie_law: t,
-rev: fe.git_commit,
-source: ce,
-source_ver: le,
-multisession: !0
+rev: ue.git_commit,
+source: oe,
+source_ver: re,
+country_code: fe.COUNTRY_CODE,
+multisession: !0,
+gd_compatible: se
 };
 if (W.$("livechat").$("ui").$("popout$bool").getValue()) o.popout = !0; else {
-o.title = B.title;
-o.url = G.location.href;
-o.ref = G.document.referrer;
+o.title = F.title;
+o.url = K.location.href;
+o.ref = K.document.referrer;
 }
-var r = Pe._register;
-if (r) for (var s in r) r.hasOwnProperty(s) && (o[s] = r[s]);
+var r = Oe._register;
+if (r) for (var s in r) Object.prototype.hasOwnProperty.call(r, s) && (o[s] = r[s]);
 return o;
 }
-function L() {
-if (ge.ACCOUNT_KEY) {
-X || Pe.connect();
-var e = A();
-ve.retrieveIDToken(function(t, n) {
-if (t) q(); else {
+function T() {
+if (fe.ACCOUNT_KEY) {
+var e = k();
+pe.retrieveIDToken(function(t, n) {
+if (t) j(); else {
 if (n) {
 delete e.mID;
 e.idt = n;
 }
-l(e);
+d(e);
 }
 });
 }
 }
 function O() {
-return !!ee.getValue();
+return !!Q.getValue();
 }
-function x() {
-var e = Y.getValue("status$string"), t = Y.getValue("socket_status$string");
-window.clearTimeout(D.timer);
-if ("error" != e) if ("break" == t) if ("idle_disconnect" == e) Y.update({
+function L() {
+var e = H.getValue("status$string"), t = H.getValue("socket_status$string");
+window.clearTimeout(A.timer);
+if ("error" != e) if ("break" == t) if ("idle_disconnect" == e) H.update({
 message$string: "idle_disconnect"
 }); else {
-Y.update({
+H.update({
 message$string: "reconnecting"
 });
-D.timer = window.setTimeout(D, 6e4);
-} else if (null === t && "registered" == e) Y.update({
+A.timer = window.setTimeout(A, 6e4);
+} else if (null === t && "registered" == e) H.update({
 message$string: "resuming"
-}); else if (pe(e) && pe(t)) {
+}); else if (le(e) && le(t)) {
 var n = O() ? "fast_init" : "first_init";
-Y.update({
+H.update({
 message$string: n
 });
-} else Y.update({
+} else H.update({
 message$string: null
-}); else D.timer = window.setTimeout(D, 5e3);
+}); else A.timer = window.setTimeout(A, 5e3);
 }
-function S() {
-X && W.$("livechat").$("profile").write({
-disconnect_timeout$int: U(X.rtt)
+function x() {
+B && W.$("livechat").$("profile").write({
+disconnect_timeout$int: P(B.rtt)
 });
 }
-function D() {
-Y.update({
+function A() {
+H.update({
 message$string: "disconnected"
 });
 }
+function I() {
+return ge.getConnectionStats(B);
+}
 function R() {
-var e = X;
-return e ? {
-connect_attempts: e.connect_attempts,
-connections: e.connections,
-disconnects: e.disconnects,
-timeout_server: e.timeout_server,
-timeout_response_soft: e.timeout_response_soft,
-timeout_response_hard: e.timeout_response_hard,
-sent_bytes: e.sent_bytes,
-recv_bytes: e.recv_bytes,
-sent_messages: e.sent_messages,
-recv_messages: e.recv_messages,
-sent_frames: e.sent_frames,
-recv_frames: e.recv_frames,
-lost_frames: e.lost_frames,
-ooo_frames: e.ooo_frames,
-bytes_at_connect: e.bytes_at_connect,
-rtt: e.rtt,
-clock_skew: e.clock_skew,
-reconnect_delay: e.reconnect_delay,
-quality: e.quality,
-host: e.host,
-status: e.status,
-zone: window.__$__GEO,
-last_frame_time: e.last_frame_time,
-local_time: +new Date()
-} : {
-status: "not connected"
-};
+return G;
 }
 function C() {
-return xe;
+return ge.getServerTime(B);
 }
-function I() {
-return +new Date() - (X ? X.clock_skew : 0);
+function S(e) {
+ke += 1;
+Te[ke] = e;
+return ke;
 }
-function N(e) {
-Ie += 1;
-Ne[Ie] = e;
-return Ie;
-}
-function P(e) {
+function D(e) {
 if (e) {
 var t = {};
 t.path = e.path;
 t.value = e.value;
-de(e.func) && (t.__messageID = N(e.func));
-De.push(t);
+ce(e.func) && (t.__messageID = S(e.func));
+be.push(t);
 }
-if (X && Se) for (;De.length; ) X.send(De.shift());
+if (B && we) for (;be.length; ) B.send(be.shift());
 }
-function M(e) {
-return e ? Q.getValue(e) : Q.getValue();
+function N(e) {
+return e ? Z.getValue(e) : Z.getValue();
 }
-function U(e) {
-var t, n, i = 10 * Ee.SECOND, o = 1 * Ee.SECOND, r = 120 * Ee.SECOND, s = 20 * Ee.SECOND;
+function P(e) {
+var t, n, i = 10 * ve.SECOND, o = 1 * ve.SECOND, r = 120 * ve.SECOND, s = 20 * ve.SECOND;
 e = Math.round(e) || 0;
 e = Math.max(o, Math.min(e, i));
 t = (e - o) / (i - o);
@@ -3829,62 +3461,55 @@ return e;
 }(t) * (r - s);
 return Math.floor(n / 1e3);
 }
-function V(e) {
-he = e;
+function M(e) {
+ae = e;
+}
+function V() {
+return B ? B.id : null;
 }
 function j() {
-return X ? X.id : null;
-}
-function z() {
-K();
-}
-function q() {
-Y.update({
+H.update({
 disconnection_status$string: "disconnecting"
 });
-d();
-Oe.forEach(function(e) {
-h(e.socket);
-e.socket.fire("close");
-});
-D.timer = clearTimeout(D.timer);
-Y.update({
+f();
+A.timer = clearTimeout(A.timer);
+H.update({
 disconnection_status$string: "disconnected"
 });
 }
-function K() {
-ie.unbindValue(a);
-te.unbindValue(s);
-W.$("livechat").$("profile").unbindValue(r);
-Y.$("status$string").unbindValue(o);
-Y.$("socket_status$string").unbindValue(x);
-Y.$("reconnect$bool").unbindValue(g);
-q();
-Oe = [], xe = "", Se = !1, De = [], Re = [], Ce = !1, Ie = 0, Ne = {}, F = H = W = Y = X = Z = J = Q = ee = te = ne = ie = oe = re = se = ae = ce = ue = le = he = null;
+function U() {
+te.unbindValue(c);
+J.unbindValue(a);
+W.$("livechat").$("profile").unbindValue(s);
+H.$("status$string").unbindValue(r);
+H.$("socket_status$string").unbindValue(L);
+H.$("reconnect$bool").unbindValue(g);
+j();
+we = !1, be = [], $e = [], Ee = !1, ke = 0, Te = {}, q = z = W = H = B = Y = X = Z = Q = J = ee = te = ne = ie = oe = re = se = ae = null;
 }
-var F, H, G, B, W, Y, X, Z, J, Q, ee, te, ne, ie, oe, re, se, ae, ce, ue, le, he, de = n(2), fe = n(5), pe = n(1), me = n(0), ge = n(4), _e = n(17), ve = n(16), ye = n(6), we = n(40), be = n(35), $e = n(34), Ee = n(32), Te = {
+var q, z, K, F, W, H, B, G, Y, X, Z, Q, J, ee, te, ne, ie, oe, re, se, ae, ce = n(5), ue = n(4), le = n(1), de = n(0), fe = n(3), he = n(14), pe = n(13), me = n(6), ge = n(36), _e = n(35), ve = n(30), ye = {
 FLUSH_DELAY_MS: 0,
 RECONNECT_DELAY_MS: 1e4
-}, ke = 3e3, Ae = 6e4, Le = new $e(be, !1), Oe = [], xe = "", Se = !1, De = [], Re = [], Ce = !1, Ie = 0, Ne = {}, Pe = me.extend({
+}, we = !1, be = [], $e = [], Ee = !1, ke = 0, Te = {}, Oe = de.extend({
 init: i,
-send: l,
+send: d,
 connect: v,
-reconnect: f,
-clientDisconnect: q,
-destroy: K,
+reconnect: h,
+clientDisconnect: j,
+destroy: U,
 disconnect: m,
-getConnectionStats: R,
-getHost: C,
-getServerTime: I,
-getServerSettings: M,
-reconnectIfServerRetired: u,
-registerCallback: N,
-getSocketID: j,
-getDCTimeoutValue: U,
-setSocket: V,
-reset: z
+getConnectionStats: I,
+getHost: R,
+getServerTime: C,
+getServerSettings: N,
+reconnectIfServerRetired: l,
+registerCallback: S,
+getSocketID: V,
+getDCTimeoutValue: P,
+setSocket: M,
+reset: U
 });
-e.exports = Pe;
+e.exports = Oe;
 }, function(e, t, n) {
 function i(e) {
 var t = e.type, n = u[t];
@@ -3895,7 +3520,7 @@ var o = i.paths && "type" === i.paths.pop(), r = o && i.actual ? i.actual + " ty
 return new Error(r);
 }
 }
-var o = n(18), r = {
+var o = n(15), r = {
 QUICK_REPLIES: "QUICK_REPLIES",
 BUTTON_TEMPLATE: "BUTTON_TEMPLATE",
 PANEL_TEMPLATE: "PANEL_TEMPLATE",
@@ -4022,7 +3647,7 @@ t.count = 1;
 return e.apply(this, arguments);
 };
 }
-var o = n(15), r = n(2), s = {
+var o = n(22), r = n(5), s = {
 rateLimit: i
 };
 e.exports = s;
@@ -4039,13 +3664,13 @@ i.onError(e);
 });
 s.load(e);
 }
-var o = n(0), r = n(21);
+var o = n(0), r = n(18);
 i.prototype.onError = function(e) {};
 e.exports = i;
 }, function(e, t, n) {
 function i(e, t) {
 var n = a[e];
-n.module_function = new Function("$Modules", t.toString().replace(h, "$1"));
+n.module_function = new Function("$Modules", t.toString().replace(d, "$1"));
 n.ready();
 }
 function o(e) {
@@ -4071,7 +3696,7 @@ l.push(this);
 function s(e) {
 e();
 }
-var a = n(22), c = n(5), u = n(46), l = [], h = /^function *\( *\) *{ *([\s\S]*) *}$/;
+var a = n(19), c = n(4), u = n(42), l = [], d = /^function *\( *\) *{ *([\s\S]*) *}$/;
 r.ensureLoaded = function(e, t) {
 e instanceof r ? e.ensureLoaded(t) : t();
 };
@@ -4133,8 +3758,90 @@ function i() {
 var e = o.getVariable("navigator"), t = e.userAgent || "", n = e.vendor || "", i = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i, r = /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i, s = t || n || window.opera;
 return i.test(s) || r.test(s.substr(0, 4));
 }
-var o = n(48);
+var o = n(44);
 e.exports = i;
+}, function(e, t, n) {
+function i(e, t) {
+return t ? s(e, t) : o(e);
+}
+function o(e) {
+for (var t, n, i = e.length; i > 1; ) {
+t = Math.floor(i-- * Math.random());
+n = e[t];
+e[t] = e[i];
+e[i] = n;
+}
+return e;
+}
+function r(e, t) {
+if (!e || e.length <= 0) return -1;
+if (!t) return Math.floor(Math.random() * e.length);
+t = a(e, t);
+var n, i = 0;
+for (n = t.length; n--; ) i += t[n];
+var o = Math.random() * i, r = 0, s = t.length;
+for (n = 0; n < s - 1; n++) {
+r += t[n];
+if (o <= r) return n;
+}
+return n;
+}
+function s(e, t) {
+var n, i, o, r, s, c = e.concat();
+t = a(e, t);
+e.length = 0;
+s = 0;
+for (n = t.length; n--; ) s += t[n];
+o = Math.random() * s;
+r = 0;
+n = 0;
+for (;c.length; ) {
+r += t[n];
+if (o <= r) {
+s -= t[n];
+i = c.splice(n, 1)[0];
+t.splice(n, 1);
+e.push(i);
+o = Math.random() * s;
+r = 0;
+n = 0;
+} else n++;
+}
+return e;
+}
+function a(e, t) {
+if (u(t)) {
+if (t.length === e.length) return t.concat();
+throw new window.Error("Invalid weights array: length does not match");
+}
+if (l(t)) return c(e, t);
+throw new window.Error("Invalid weights supplied");
+}
+function c(e, t, n) {
+var i, o, r;
+if (!u(e)) throw new TypeError(" arr is not an array");
+var s = Object(e), a = s.length >>> 0;
+if (!l(t)) throw new TypeError(t + " is not a function");
+arguments.length > 2 && (i = n);
+o = new Array(a);
+r = 0;
+for (;r < a; ) {
+var c, d;
+if (r in s) {
+c = s[r];
+d = t.call(i, c, r, s);
+o[r] = d;
+}
+r++;
+}
+return o;
+}
+var u = n(7), l = n(5), d = {
+shuffle: i,
+random_index: r,
+map: c
+};
+e.exports = d;
 }, function(e, t) {
 function n(e, t) {
 this.name = e;
@@ -4429,295 +4136,345 @@ return e && this.deleted && !(this.listeners_keys && this.listeners_keys.length)
 };
 n.DataNode = n;
 e.exports = n;
+}, function(e, t) {
+var n = function(e, t) {
+return e === t || e && t && "object" == typeof e && "object" == typeof t && i(e, t);
+}, i = function(e, t) {
+var i;
+for (i in e) if (!n(e[i], t[i])) return !1;
+for (i in t) if (!n(e[i], t[i])) return !1;
+return !0;
+}, o = function(e) {
+if ("object" != typeof e || !e) return e;
+var t = {};
+for (var n in e) e.hasOwnProperty(n) && (t[n] = o(e[n]));
+return t;
+}, r = function(e) {
+if (e) for (var t = 1, n = arguments.length; t < n; t++) {
+var i = arguments[t];
+if (i) for (var o in i) i.hasOwnProperty(o) && (e[o] = i[o]);
+}
+return e;
+}, s = {
+equal: n,
+clone: o,
+extend: r
+};
+e.exports = s;
 }, function(e, t, n) {
 function i(e) {
-if (!le([ at ], [ e ], "logout")) if (Ge.isAuthenticated()) {
-we.destroy();
-s();
-Ge.clearIdentity();
+de([ ct ], [ e ], "logout") || (Be.isAuthenticated() ? o(e) : le(new Error("This API is only applicable for authenticated visitors"), "logout"));
+}
+function o(e) {
+be.destroy();
+a();
 Be.clearIdentity();
+Ge.clearIdentity();
 Je = !1;
 e && setTimeout(function() {
 e(null);
 });
-} else ue(new Error("This API is only applicable for authenticated visitors"), "logout");
 }
-function o(e) {
-Ee && Qe.un("data", Ee);
-Ee = function(e) {
-Ze.fire(e.type, e.detail);
+function r(e) {
+ke && et.un("data", ke);
+ke = function(e) {
+Qe.fire(e.type, e.detail);
 };
-Qe.on("data", Ee);
-if (Je) ue(new Error("Zendesk Chat Web SDK has already been initialized. Please ensure that zChat.init() is only called once in your code"), "init"); else if (Ae.isIE <= 10) ue(new Error("The current browser you are on is not supported by the Web SDK. Please refer to the documentation to learn about the system requirements for Zendesk Chat."), "init"); else {
-var t = nt.obj({
-account_key: nt.type("string").ok(),
-suppress_console_error: nt.type("boolean"),
-override_auth_server_host: nt.type("string").ok(),
-override_proxy: nt.type("string").ok(),
-authentication: nt.obj({
-jwt_fn: nt.type("function").ok()
+et.on("data", ke);
+if (Je) le(new Error("Zendesk Chat Web SDK has already been initialized. Please ensure that zChat.init() is only called once in your code"), "init"); else if (Le.isIE <= 10) le(new Error("The current browser you are on is not supported by the Web SDK. Please refer to the documentation to learn about the system requirements for Zendesk Chat."), "init"); else {
+var t = it.obj({
+account_key: it.type("string").ok(),
+suppress_console_error: it.type("boolean"),
+override_auth_server_host: it.type("string").ok(),
+override_proxy: it.type("string").ok(),
+authentication: it.obj({
+jwt_fn: it.type("function").ok()
 }, {
 requiredKeys: [ "jwt_fn" ]
 }),
-activity_window: nt.obj({
-document: nt.type("object").ok()
-}, {
-requiredKeys: [ "document" ]
-}),
-popout: nt.type("boolean")
+activity_window: it.type("object").chain(lt),
+popout: it.type("boolean")
 }, {
 requiredKeys: [ "account_key" ]
 });
-if (!le([ t ], [ e ], "init")) {
-var n = new Ie("root"), i = new Ie("root"), o = {
+if (!de([ t ], [ e ], "init")) {
+var n = new Ne("root"), i = new Ne("root"), o = {
 livechat: {
-settings: Ce.clone(He.livechat.settings)
+settings: De.clone(He.livechat.settings)
 }
 };
 n.update(o);
 i.update(o);
-Ue() && n.$("livechat").$("ui").$("mobile$bool").update(!0);
-Me.ACCOUNT_KEY = e.account_key;
+je() && n.$("livechat").$("ui").$("mobile$bool").update(!0);
+Ve.ACCOUNT_KEY = e.account_key;
 if (e.authentication) {
-Ge.setOverrideHost(e.override_auth_server_host);
-Ge.setSiteJWTFunc(e.authentication.jwt_fn);
-Ge.setDataNode(n);
-Ge.authenticate(function(t) {
-t ? ue(new Error("Failed to verify token: " + t.reason + (t.details ? ": " + t.details : "")), "init", {
+Be.setOverrideHost(e.override_auth_server_host);
+Be.setSiteJWTFunc(e.authentication.jwt_fn);
+Be.setDataNode(n);
+Be.authenticate(function(t) {
+t ? le(new Error("Failed to verify token: " + t.reason + (t.details ? ": " + t.details : "")), "init", {
 reason: t.reason,
 details: t.details
-}) : r(e, Ke, n, i);
+}) : s(e, Fe, n, i);
 });
-} else r(e, Ke, n, i);
+} else s(e, Fe, n, i);
 }
 }
 }
-function r(e, t, n, i) {
-we = t;
-be = n;
-$e = i;
-Ye.init(be, $e);
-ee();
+function s(e, t, n, i) {
+be = t;
+$e = n;
+Ee = i;
+Xe.init($e, Ee);
+te();
 Te = function(e) {
-(e.path ? $e.descend(e.path) : $e).update(e.update);
+(e.path ? Ee.descend(e.path) : Ee).update(e.update);
 };
-we.on("message", Te);
-ke = e.suppress_console_error || !1;
-Be.init(e.activity_window);
-switch (Be.DOM.getVariable("account_status")) {
+be.on("message", Te);
+Oe = e.suppress_console_error || !1;
+Ge.init(e.activity_window);
+switch (Ge.DOM.getVariable("account_status")) {
 case "invalid_account_key":
-Ve.warnBadEmbed();
+Ue.warnBadEmbed();
 
 case "banned":
 return;
 }
-we.init({
-root: be,
+be.init({
+root: $e,
 overrideProxy: e.override_proxy,
 isCookieDenied: function() {
 return !1;
 },
-source: et,
-lastHost: Be.DOM.getVariable("web_sdk_last_host"),
-source_ver: Le.release_tag,
-activity_window: e.activity_window
+source: tt,
+lastHost: Ge.DOM.getVariable("web_sdk_last_host"),
+source_ver: xe.release_tag,
+activity_window: e.activity_window,
+gd_compatible: 1
 });
-be.$("connection").$("server$string").bindValue(function(e) {
-e && Be.DOM.saveVariable("web_sdk_last_host", e);
+$e.$("connection").$("server$string").bindValue(function(e) {
+e && Ge.DOM.saveVariable("web_sdk_last_host", e);
 });
-$e.$("livechat").$("account").$("status$string").bindValue(function(e) {
-e && Be.DOM.saveVariable("account_status", e);
+Ee.$("livechat").$("account").$("status$string").bindValue(function(e) {
+e && Ge.DOM.saveVariable("account_status", e);
 });
-Fe.init(be, we);
-We.init(be, e.activity_window);
+We.init($e, be);
+Ye.init($e, e.activity_window);
 Je = !0;
 }
-function s() {
-Qe.un("data", Ee);
-Ye.destroy();
-we.un("message", Te);
-Ee = null;
-Te = null;
-ke = void 0;
-}
 function a() {
-we.reconnect();
+et.un("data", ke);
+Xe.destroy();
+be.un("message", Te);
+ke = null;
+Te = null;
+Oe = void 0;
 }
 function c() {
-"invalid_account_key" !== Be.DOM.getVariable("account_status") ? "closed" === Ze.getConnectionStatus() ? lt() : ue(new Error("Call has been ignored due to invalid connection status"), "reconnect") : Ve.warnBadEmbed();
+be.reconnect();
 }
 function u() {
-return Qe;
+"invalid_account_key" !== Ge.DOM.getVariable("account_status") ? "closed" === Qe.getConnectionStatus() ? ft() : le(new Error("Call has been ignored due to invalid connection status"), "reconnect") : Ue.warnBadEmbed();
 }
 function l() {
-return gt($e.$("livechat").$("profile").getValue());
+return et;
 }
-function h(e, t) {
-if (!le([ nt.obj({
-display_name: nt.any([ nt.equal(""), nt.type("string").regex(rt).maxLength(255) ]),
-email: nt.any([ nt.equal(""), nt.type("string").regex(Ne.email) ]),
-phone: st
-}), at ], [ e, t ], "setVisitorInfo")) {
+function d() {
+return vt(Ee.$("livechat").$("profile").getValue());
+}
+function f(e, t) {
+if (!de([ it.obj({
+display_name: it.any([ it.equal(""), it.type("string").regex(st).maxLength(255) ]),
+email: it.any([ it.equal(""), it.type("string").regex(Pe.email) ]),
+phone: at
+}), ct ], [ e, t ], "setVisitorInfo")) {
 var n = {};
-t = t || tt;
+t = t || nt;
 "display_name" in e && (n.display_name$string = e.display_name);
 "email" in e && (n.email$string = e.email);
 "phone" in e && (n.phone$string = e.phone);
-be.$("livechat").$("profile").write(n, fe(t));
+$e.$("livechat").$("profile").write(n, pe(t));
 }
 }
-function d(e, t) {
-if (!le([ nt.type("string").regex(rt), at ], [ e, t ], "sendChatMsg")) {
-t = t || tt;
-Fe.sendChatMsg({
+function h(e, t) {
+if (!de([ it.type("string").regex(st), ct ], [ e, t ], "sendChatMsg")) {
+t = t || nt;
+We.sendChatMsg({
 msg: e.trim()
-}, null, fe(t));
+}, null, pe(t));
 }
-}
-function f(e, t) {
-le([ nt.chain(he), at ], [ e, t ], "sendFile") || p(e, t);
 }
 function p(e, t) {
-t = t || tt;
-Ke.reconnectIfServerRetired(function() {
-Fe.sendFileWithCallback(e, t);
+de([ it.chain(fe), ct ], [ e, t ], "sendFile") || m(e, t);
+}
+function m(e, t) {
+t = t || nt;
+Fe.reconnectIfServerRetired(function() {
+We.sendFileWithCallback(e, t);
 });
 }
-function m(e) {
-if (!le([ nt.type("number") ], [ e ], "getDepartment")) return g(e);
-}
 function g(e) {
-var t = $e.$("livechat").$("departments").$(e).getValue();
-if (t) return _t(t, e);
+var t = it.type("number"), n = Ee.$("livechat");
+if (!de([ t ], [ e ], "getDepartment")) {
+n.$("account").$("departments_migrated$bool").getValue() && n.$("dg_mappings").hasKey(e) && console.warn("legacy department id is deprecated, use group id %s instead", n.$("dg_mappings").$(e).$("group_id$int").getValue());
+return _(e);
 }
-function _() {
-return oe($e.$("livechat").$("departments").getValue(), _t);
+}
+function _(e) {
+var t = Ee.$("livechat"), n = t.$("departments").$(e).getValue();
+if (t.$("account").$("departments_migrated$bool").getValue()) {
+if (n && t.$("dg_mappings").hasKey(e)) {
+var i = t.$("dg_mappings").$(e).$("group_id$int").getValue();
+return yt(n, i);
+}
+!n && t.$("groups").hasKey(e) && (n = t.$("groups").$(e).getValue());
+}
+return n ? yt(n, e) : void 0;
 }
 function v() {
-var e = $e.$("livechat").$("profile").$("department_id$int"), t = e.getValue();
-return xe(t) ? t : void 0;
+var e = {}, t = Ee.$("livechat");
+e = t.$("account").$("departments_migrated$bool").getValue() ? t.$("groups").getValue() : t.$("departments").getValue();
+return re(e, yt);
 }
-function y(e, t) {
-if (!le([ nt.type("number").chain(de), at ], [ e, t ], "setVisitorDefaultDepartment")) {
-t = t || tt;
-be.$("livechat").$("profile").write({
+function y() {
+var e = Ee.$("livechat").$("profile").$("department_id$int"), t = e.getValue();
+return Ie(t) ? t : void 0;
+}
+function w(e, t) {
+if (!de([ it.type("number").chain(he), ct ], [ e, t ], "setVisitorDefaultDepartment")) {
+t = t || nt;
+$e.$("livechat").$("profile").write({
 department_id$int: e
-}, fe(t));
+}, pe(t));
 }
 }
-function w(e) {
-if (!le([ at ], [ e ], "clearVisitorDefaultDepartment")) {
-e = e || tt;
-be.$("livechat").$("profile").write({
+function b(e) {
+if (!de([ ct ], [ e ], "clearVisitorDefaultDepartment")) {
+e = e || nt;
+$e.$("livechat").$("profile").write({
 department_id$int: null
-}, fe(e));
+}, pe(e));
 }
-}
-function b(e, t) {
-E("added$string", e, "addTag", t);
 }
 function $(e, t) {
-E("removed$string", e, "removeTag", t);
+k("added$string", e, "addTag", t);
 }
-function E(e, t, n, i) {
-if (!le([ nt.type("string").regex(rt).chain(ct), at ], [ t, i ], n)) {
-i = i || tt;
+function E(e, t) {
+k("removed$string", e, "removeTag", t);
+}
+function k(e, t, n, i) {
+if (!de([ it.type("string").regex(st).chain(ut), ct ], [ t, i ], n)) {
+i = i || nt;
 var o = {};
 o[e] = t.trim();
-be.$("livechat").$("channel").$("tags").write(o, fe(i));
+$e.$("livechat").$("channel").$("tags").write(o, pe(i));
 }
 }
 function T(e, t) {
-A("added$string", e, "addTags", t);
+L("added$string", e, "addTags", t);
 }
-function k(e, t) {
-A("removed$string", e, "removeTags", t);
+function O(e, t) {
+L("removed$string", e, "removeTags", t);
 }
-function A(e, t, n, i) {
-if (!le([ nt.each(nt.type("string").regex(rt).chain(ct)).minLength(1), at ], [ t, i ], n)) {
-i = i || tt;
+function L(e, t, n, i) {
+if (!de([ it.each(it.type("string").regex(st).chain(ut)).minLength(1), ct ], [ t, i ], n)) {
+i = i || nt;
 for (var o = 0, r = t.length; o < r; o++) t[o] = t[o].trim();
 var s = {};
 s[e] = t.join(",");
-be.$("livechat").$("channel").$("tags").write(s, fe(i));
+$e.$("livechat").$("channel").$("tags").write(s, pe(i));
 }
-}
-function L(e, t) {
-if (!le([ nt.obj({
-title: nt.type("string").regex(rt),
-url: nt.type("string").regex(ot)
-}, {
-requiredKeys: [ "title", "url" ]
-}), at ], [ e, t ], "sendVisitorPath")) {
-t = t || tt;
-be.$("livechat").$("session").$("page_path").write({
-url$string: e.url,
-title$string: e.title
-}, fe(t));
-}
-}
-function O() {
-var e = $e.$("livechat").$("channel").$("rating$string").getValue(), t = $e.$("livechat").$("channel").$("comment$string").getValue(), n = {};
-Se(e) || (n.rating = e);
-Se(t) || (n.comment = t);
-return n;
 }
 function x(e, t) {
-if (!le([ nt.any([ nt.equal(null), nt.equal("good"), nt.equal("bad") ]), at ], [ e, t ], "sendChatRating")) {
-t = t || tt;
-be.$("livechat").$("channel").write({
+if (!de([ it.obj({
+title: it.type("string").regex(st),
+url: it.type("string").regex(rt)
+}, {
+requiredKeys: [ "title", "url" ]
+}), ct ], [ e, t ], "sendVisitorPath")) {
+t = t || nt;
+$e.$("livechat").$("session").$("page_path").write({
+url$string: e.url,
+title$string: e.title
+}, pe(t));
+}
+}
+function A() {
+var e = Ee.$("livechat").$("channel").$("rating$string").getValue(), t = Ee.$("livechat").$("channel").$("comment$string").getValue(), n = {};
+Re(e) || (n.rating = e);
+Re(t) || (n.comment = t);
+return n;
+}
+function I(e, t) {
+if (!de([ it.any([ it.equal(null), it.equal("good"), it.equal("bad") ]), ct ], [ e, t ], "sendChatRating")) {
+t = t || nt;
+$e.$("livechat").$("channel").write({
 rating$string: e
-}, fe(t));
+}, pe(t));
 }
 }
-function S(e, t) {
-if (!le([ nt.type("string"), at ], [ e, t ], "sendChatComment")) {
-t = t || tt;
-be.$("livechat").$("channel").write({
+function R(e, t) {
+if (!de([ it.type("string"), ct ], [ e, t ], "sendChatComment")) {
+t = t || nt;
+$e.$("livechat").$("channel").write({
 comment$string: e
-}, fe(t));
+}, pe(t));
 }
 }
-function D(e) {
-var t = be.$("livechat").$("channel");
-if (!le([ at ], [ e ], "endChat")) {
-e = e || tt;
-t.write({
+function C(e, t) {
+var n = it.obj({
+clear_dept_id_on_chat_ended: it.type("boolean")
+}), i = $e.$("livechat").$("channel");
+if ("function" == typeof e) {
+t = e;
+e = {};
+} else void 0 === e && (e = {});
+if (!de([ n, ct ], [ e, t ], "endChat")) {
+t = t || nt;
+i.write({
 chatting$bool: !1
-}, fe(e));
+}, pe(t));
+e.clear_dept_id_on_chat_ended && We.clearChatDepartmentID();
 }
 }
-function R() {
-return $e.$("livechat").$("channel").$("chatting$bool").getValue() || !1;
+function S() {
+return Ee.$("livechat").$("channel").$("chatting$bool").getValue() || !1;
 }
-function C() {
-return oe($e.$("livechat").$("agents").getValue(), vt);
+function D() {
+return re(Ee.$("livechat").$("agents").getValue(), wt);
 }
-function I(e) {
-return vt($e.$("livechat").$("agents").$(e).getValue(), e);
+function N(e) {
+return wt(Ee.$("livechat").$("agents").$(e).getValue(), e);
 }
-function N() {
-var e = $e.$("livechat"), t = e.$("settings"), n = t.$("operating_hours");
+function P() {
+var e = Ee.$("livechat"), t = e.$("settings"), n = t.$("operating_hours");
 if (t.hasKey("operating_hours")) {
 var i = n.$("type$string").getValue(), o = {
 enabled: n.$("enabled$bool").getValue(),
 type: i,
 timezone: t.$("timezone$string").getValue() || "UTC"
 };
-"account" == i ? o.account_schedule = pe(n.$("schedule").getValue() || {}) : "department" == i && (o.department_schedule = me(n.$("schedules").getValue(), e.$("departments").getKeys()));
+if ("account" == i) o.account_schedule = me(n.$("schedule").getValue() || {}); else if ("department" == i) {
+var r = e.$("dg_mappings").getValue(), s = ge(n.$("schedules").getValue(), e.$("departments").getKeys());
+e.$("account").$("departments_migrated$bool").getValue() && r && (s = Object.keys(s).reduce(function(e, t) {
+t in r ? e[r[t].group_id$int] = s[t] : e[t] = s[t];
+return e;
+}, {}));
+o.department_schedule = s;
+}
 return o;
 }
 }
-function P(e, t) {
-if (!le([ nt.obj({
-name: nt.type("string").regex(rt).maxLength(255),
-email: nt.type("string").regex(Ne.email),
-message: nt.type("string").regex(rt),
-phone: st
+function M(e, t) {
+if (!de([ it.obj({
+name: it.type("string").regex(st).maxLength(255),
+email: it.type("string").regex(Pe.email),
+message: it.type("string").regex(st),
+phone: at
 }, {
 requiredKeys: [ "name", "email", "message" ]
-}), at ], [ e, t ], "sendOfflineMsg")) {
-t = t || tt;
+}), ct ], [ e, t ], "sendOfflineMsg")) {
+t = t || nt;
 var n = {
 name: {
 name$string: "name",
@@ -4740,56 +4497,56 @@ value$string: e.phone
 name$string: "department_id",
 value$string: e.department
 });
-be.$("livechat").$("settings").$("forms").$("offline_form").$("form_submitted").write(n, fe(t));
+$e.$("livechat").$("settings").$("forms").$("offline_form").$("form_submitted").write(n, pe(t));
 }
 }
-function M(e) {
-var t = be.$("livechat").$("channel").$("typing"), n = t.$("typing$bool").getValue(), i = nt.type("boolean");
-n !== e && (le([ i ], [ e ], "sendTyping") || t.write({
+function V(e) {
+var t = $e.$("livechat").$("channel").$("typing"), n = t.$("typing$bool").getValue(), i = it.type("boolean");
+n !== e && (de([ i ], [ e ], "sendTyping") || t.write({
 typing$bool: e
 }));
 }
-function U(e, t) {
-var n = nt.type("string").regex(Ne.email), i = !!$e.$("livechat").$("channel").$("log").getKeys().length;
-if (!le([ n, at ], [ e, t ], "sendEmailTranscript")) {
-t = t || tt;
-$e.$("livechat").$("channel").$("chatting$bool").getValue() || !1 ? be.$("livechat").$("channel").write({
+function j(e, t) {
+var n = it.type("string").regex(Pe.email), i = !!Ee.$("livechat").$("channel").$("log").getKeys().length;
+if (!de([ n, ct ], [ e, t ], "sendEmailTranscript")) {
+t = t || nt;
+Ee.$("livechat").$("channel").$("chatting$bool").getValue() || !1 ? $e.$("livechat").$("channel").write({
 email_transcript$string: e
-}, fe(t)) : Ge.isAuthenticated() || i ? be.$("livechat").$("channel").write({
+}, pe(t)) : Be.isAuthenticated() || i ? $e.$("livechat").$("channel").write({
 email_last_transcript$string: e
-}, fe(t)) : ue(new Error("There were no past chat to send a transcript of"), "sendEmailTranscript");
+}, pe(t)) : le(new Error("There were no past chat to send a transcript of"), "sendEmailTranscript");
 }
 }
-function V(e, t) {
+function U(e, t) {
 return {
 id: parseInt(t, 10)
 };
 }
-function j(e) {
-return e.hasOwnProperty("typing$bool") ? {
+function q(e) {
+return Object.prototype.hasOwnProperty.call(e, "typing$bool") ? {
 type: "typing"
 } : null;
 }
 function z(e) {
-var t = e.hasOwnProperty("typing$bool"), n = {
+var t = Object.prototype.hasOwnProperty.call(e, "typing$bool"), n = {
 type: "typing",
 nick: "agent:trigger"
 };
 return t ? n : null;
 }
-function q(e) {
-return e.hasOwnProperty("timestamp$int") ? {
+function K(e) {
+return Object.prototype.hasOwnProperty.call(e, "timestamp$int") ? {
 type: "last_read"
 } : null;
 }
-function K(e) {
+function F(e) {
 return 0 === e.indexOf("visitor:") ? "visitor" : e;
 }
-function F(e) {
+function W(e) {
 if (!e.type$string) return null;
 if (!e.nick$string) return null;
 var t = {
-nick: K(e.nick$string),
+nick: F(e.nick$string),
 type: e.type$string
 }, n = e.msg$string;
 e.first$bool && (t.first = e.first$bool);
@@ -4811,43 +4568,47 @@ height: i.height$int
 };
 }
 "deleted$bool" in o && (r.deleted = o.deleted$bool);
-return Ce.extend(t, {
+return De.extend(t, {
 type: "chat.file",
 display_name: e.display_name$string,
 attachment: r
 });
 }
 if ("structured_msg" in e) {
-var s = ce(e.structured_msg);
-ve(s, [ "items", "buttons", "quick_replies" ]);
-var a = qe.validate(s);
-a ? ue(a, 'Unsupported structured message in "chat.msg" event') : t.structured_msg = s;
+var s = ue(e.structured_msg);
+ye(s, [ "items", "buttons", "quick_replies" ]);
+var a = Ke.validate(s);
+a ? le(a, 'Unsupported structured message in "chat.msg" event') : t.structured_msg = s;
 }
 ;
-return Ce.extend(t, {
+return De.extend(t, {
 display_name: e.display_name$string,
 msg: n,
 options: e.options$string ? e.options$string.split("/") : []
 });
 
 case "chat.rating":
-return Ce.extend(t, {
+return De.extend(t, {
 display_name: e.display_name$string,
 new_rating: e.new_rating$string,
 rating: e.rating$string
 });
 
 case "chat.comment":
-return Ce.extend(t, {
+return De.extend(t, {
 display_name: e.display_name$string,
 comment: e.comment$string,
 new_comment: e.new_comment$string
 });
 
-case "chat.memberjoin":
 case "chat.memberleave":
+return De.extend(t, {
+display_name: e.display_name$string
+});
+
+case "chat.memberjoin":
 case "chat.request.rating":
-return Ce.extend(t, {
+return De.extend(t, {
 display_name: e.display_name$string
 });
 
@@ -4862,12 +4623,12 @@ wait_queue: parseInt(c[1], 10)
 case "chat.join":
 var l = e.history;
 if (l && l[0]) {
-var h = Ce.extend({}, l[0]), d = h.timestamp$int;
-h.type$string = h.__type$string;
-h.display_name$string = h.name$string;
-d *= 1e3;
-h.timestamp$int = d;
-return F(h);
+var d = De.extend({}, l[0]), f = d.timestamp$int;
+d.type$string = d.__type$string;
+d.display_name$string = d.name$string;
+f *= 1e3;
+d.timestamp$int = f;
+return W(d);
 }
 return null;
 
@@ -4877,131 +4638,131 @@ return null;
 }
 }
 function H() {
-var e, t, n, i = [ "type$string", "timestamp$int" ], o = $e.$("livechat").$("channel").$("log").getValue(), r = [];
-for (var s in o) if (o.hasOwnProperty(s)) {
+var e, t, n, i = [ "type$string", "timestamp$int" ], o = Ee.$("livechat").$("channel").$("log").getValue(), r = [];
+for (var s in o) if (Object.prototype.hasOwnProperty.call(o, s)) {
 if (o[s].type$string) e = o[s]; else {
-e = be.$("livechat").$("channel").$("log").$(s).getValue();
+e = $e.$("livechat").$("channel").$("log").$(s).getValue();
 if ("chat.msg" === e.type$string && (!0 === e.unverified$bool || !0 === e.failed$bool)) continue;
 }
-var a = F(e);
+var a = W(e);
 if (null === a) continue;
 for (var c = 0; c < i.length; c++) {
 t = i[c];
-n = ae(t);
+n = ce(t);
 n in a || (a[n] = e[t]);
 }
 r.push(a);
 }
 return r;
 }
-function G() {
-if (!$e) return "closed";
-var e = $e.$("tmp").$("friendly_connection_status$string").getValue();
-return pt(e)[0];
-}
 function B() {
-var e = $e.$("livechat").$("account").$("status$string").getValue();
-return mt(e)[0];
+if (!Ee) return "closed";
+var e = Ee.$("tmp").$("friendly_connection_status$string").getValue();
+return gt(e)[0];
 }
-function W() {
-return $e.$("livechat").$("channel").$("queue_position$int").getValue() || 0;
+function G() {
+var e = Ee.$("livechat").$("account").$("status$string").getValue();
+return _t(e)[0];
 }
-function Y(e) {
-if (!le([ at ], [ e ], "fetchChatHistory")) if (Ge.isAuthenticated()) {
-var t = $e.$("livechat").$("history"), n = be.$("livechat").$("history"), i = n.$("in_progress$bool").getValue(), o = t.$("has_more$bool").getValue(), r = t.$("cursor$string").getValue();
-if (i) ue(new Error("Previous fetching of history is still in progress"), "fetchChatHistory"); else if (!1 !== o) {
-e = e || tt;
+function Y() {
+return Ee.$("livechat").$("channel").$("queue_position$int").getValue() || 0;
+}
+function X(e) {
+if (!de([ ct ], [ e ], "fetchChatHistory")) if (Be.isAuthenticated()) {
+var t = Ee.$("livechat").$("history"), n = $e.$("livechat").$("history"), i = n.$("in_progress$bool").getValue(), o = t.$("has_more$bool").getValue(), r = t.$("cursor$string").getValue();
+if (i) le(new Error("Previous fetching of history is still in progress"), "fetchChatHistory"); else if (!1 !== o) {
+e = e || nt;
 n.$("in_progress$bool").update(!0);
 n.write({
 cursor$string: r || ""
-}, fe(e));
-} else ue(new Error("No more history to load"), "fetchChatHistory");
-} else ue(new Error("This API is not available for unauthenticated visitors"), "fetchChatHistory");
+}, pe(e));
+} else le(new Error("No more history to load"), "fetchChatHistory");
+} else le(new Error("This API is not available for unauthenticated visitors"), "fetchChatHistory");
 }
-function X() {
-R() && be.$("livechat").$("ui").$("chat").write({
+function Z() {
+S() && $e.$("livechat").$("ui").$("chat").write({
 read_ts$int: +new Date()
 });
 }
-function Z(e, t, n) {
+function Q(e, t, n) {
 return function(i, o) {
 if (null === i) return {};
 for (var r = {}, s = 0, a = e.length; s < a; s++) {
 var c = e[s];
-c in i && (r[ae(c)] = i[c]);
+c in i && (r[ce(c)] = i[c]);
 }
-De(t) && Object.keys(r).length && (r[t] = o);
-if (Re(n)) {
+Ce(t) && Object.keys(r).length && (r[t] = o);
+if (Se(n)) {
 var u = n(i, o);
-return null === u ? {} : Ce.extend(r, u);
+return null === u ? {} : De.extend(r, u);
 }
 return r;
 };
 }
 function J(e, t, n) {
-$e.descend(t).bindValue(function(t) {
+Ee.descend(t).bindValue(function(t) {
 n(t).forEach(function(t) {
-Q(e, t);
+ee(e, t);
 });
 });
 }
-function Q(e, t) {
+function ee(e, t) {
 if (t) {
 if (t instanceof Error) {
 if (!t.message) return;
 } else if ("object" == typeof t && !Object.keys(t).length) return;
-Qe.fire("data", {
+et.fire("data", {
 type: e,
 detail: t
 });
 }
 }
-function ee() {
-J("connection_update", "tmp.friendly_connection_status$string", pt);
-J("account_status", "livechat.account.status$string", ne(ft));
-J("visitor_update", "livechat.profile", re([ "email$string", "phone$string", "display_name$string" ], l));
-J("department_update", "livechat.departments", se([ "name$string", "status$string" ], g));
-J("agent_update", "livechat.agents", se([ "avatar_path$string", "display_name$string", "title$string" ], I));
-J("chat", "livechat.channel.log", ie(bt));
-J("chat", "livechat.agents", ie(yt));
-J("chat", "livechat.triggers.agents", ie(wt));
-J("chat", "livechat.channel.queue_position$int", te);
-J("history", "livechat.history.log", ie(bt));
-J("chat", "livechat.channel.last_read", ie($t));
+function te() {
+J("connection_update", "tmp.friendly_connection_status$string", gt);
+J("account_status", "livechat.account.status$string", ie(mt));
+J("visitor_update", "livechat.profile", se([ "email$string", "phone$string", "display_name$string" ], d));
+J("department_update", "livechat.departments", ae([ "name$string", "status$string" ], _));
+J("agent_update", "livechat.agents", ae([ "avatar_path$string", "display_name$string", "title$string" ], N));
+J("chat", "livechat.channel.log", oe(Et));
+J("chat", "livechat.agents", oe(bt));
+J("chat", "livechat.triggers.agents", oe($t));
+J("chat", "livechat.channel.queue_position$int", ne);
+J("history", "livechat.history.log", oe(Et));
+J("chat", "livechat.channel.last_read", oe(kt));
 }
-function te(e) {
+function ne(e) {
 return [ "number" != typeof e ? null : {
 type: "chat.queue_position",
 nick: "system.queue",
 queue_position: e
 } ];
 }
-function ne(e) {
+function ie(e) {
 return function(t) {
 return void 0 === t ? [ null ] : [ e[t] || null ];
 };
 }
-function ie(e) {
+function oe(e) {
 return function(t) {
-return oe(t, e);
+return re(t, e);
 };
 }
-function oe(e, t) {
+function re(e, t) {
 var n = [];
-for (var i in e) e.hasOwnProperty(i) && n.push(t(e[i], i));
+for (var i in e) Object.prototype.hasOwnProperty.call(e, i) && n.push(t(e[i], i));
 return n;
 }
-function re(e, t) {
+function se(e, t) {
 return function(n) {
 return e.some(function(e) {
 return n && e in n;
 }) ? [ t() ] : [ null ];
 };
 }
-function se(e, t) {
+function ae(e, t) {
 return function(n) {
 var i = [];
-for (var o in n) if (n.hasOwnProperty(o)) {
+for (var o in n) if (Object.prototype.hasOwnProperty.call(n, o)) {
 var r = n[o], s = e.some(function(e) {
 return r && e in r;
 });
@@ -5010,101 +4771,101 @@ s && i.push(t(o));
 return i;
 };
 }
-function ae(e) {
+function ce(e) {
 return e.split("$")[0];
 }
-function ce(e) {
+function ue(e) {
 if (!e || "object" != typeof e) return e;
 var t = {};
-for (var n in e) if (e.hasOwnProperty(n)) {
-var i = ae(n), o = ce(e[n]);
+for (var n in e) if (Object.prototype.hasOwnProperty.call(e, n)) {
+var i = ce(n), o = ue(e[n]);
 t[i] = o;
 }
 return t;
 }
-function ue(e, t, n) {
+function le(e, t, n) {
 var i = t ? t + ": " : "";
 e = new Error("Zendesk Chat Web SDK: Error: " + i + e.message);
 e.context = t;
 e.extra = n;
-ke || window.console && window.console.error && console.error(e.message);
-Q("error", e);
+Oe || window.console && window.console.error && console.error(e.message);
+ee("error", e);
 }
-function le(e, t, n) {
+function de(e, t, n) {
 for (var i = 0; i < e.length; i++) {
 var o = e[i], r = o(t[i]);
 if (r) {
-ue(r, n);
+le(r, n);
 return !0;
 }
 }
 return !1;
 }
-function he(e) {
+function fe(e) {
 if ("[object File]" !== Object.prototype.toString.call(e)) return new Error("Expect a File object");
 }
-function de(e) {
-if (!m(e)) return new Error("Expect a valid department id");
+function he(e) {
+if (!g(e)) return new Error("Expect a valid department id");
 }
-function fe(e) {
+function pe(e) {
 return function(t) {
 var n = t.raw, i = "ok" === n.__status ? null : new window.Error("Failed");
-for (var o in n) n.hasOwnProperty(o) && 0 === o.indexOf("__") && delete n[o];
+for (var o in n) Object.prototype.hasOwnProperty.call(n, o) && 0 === o.indexOf("__") && delete n[o];
 e(i, n);
 };
 }
-function pe(e) {
+function me(e) {
 for (var t, n, i = {}, o = 0; o < 7; o++) {
 var r = e[o] || {};
 if (r.enabled$bool) {
 t = [];
 n = r.periods;
-for (var s in n) n.hasOwnProperty(s) && t.push({
+for (var s in n) Object.prototype.hasOwnProperty.call(n, s) && t.push({
 start: n[s].start$int,
 end: n[s].end$int
 });
-i[o] = ye(t);
+i[o] = we(t);
 } else i[o] = [];
 }
 return i;
 }
-function me(e, t) {
-var n, i = {}, o = _e(e), r = ge(e, t);
+function ge(e, t) {
+var n, i = {}, o = ve(e), r = _e(e, t);
 t.forEach(function(e) {
 var t = r[e];
 i[e] = {};
 for (n = 0; n < 7; n++) i[e][n] = [];
 t.forEach(function(t) {
-for (var n in o[t]) o[t].hasOwnProperty(n) && Array.prototype.push.apply(i[e][n], o[t][n]);
+for (var n in o[t]) Object.prototype.hasOwnProperty.call(o[t], n) && Array.prototype.push.apply(i[e][n], o[t][n]);
 });
 for (n = 0; n < 7; n++) {
 var s = i[e][n];
-s.length > 1 && (i[e][n] = ye(s));
+s.length > 1 && (i[e][n] = we(s));
 }
 });
 return i;
 }
-function ge(e, t) {
+function _e(e, t) {
 var n, i = {};
 t.forEach(function(e) {
 i[e] = [];
 });
-for (var o in e) if (e.hasOwnProperty(o)) {
+for (var o in e) if (Object.prototype.hasOwnProperty.call(e, o)) {
 n = e[o];
-for (var r in n.departments) if (n.departments.hasOwnProperty(r)) {
+for (var r in n.departments) if (Object.prototype.hasOwnProperty.call(n.departments, r)) {
 if (!n.departments[r]) continue;
-var s = ae(r);
+var s = ce(r);
 if (!i[s]) continue;
 i[s].push(o);
 }
 }
 return i;
 }
-function _e(e) {
+function ve(e) {
 var t, n, i = {};
-for (var o in e) if (e.hasOwnProperty(o)) {
+for (var o in e) if (Object.prototype.hasOwnProperty.call(e, o)) {
 n = e[o];
-if (n.hasOwnProperty("deleted_ts$int")) continue;
+if (Object.prototype.hasOwnProperty.call(n, "deleted_ts$int")) continue;
 if (!n.departments) continue;
 if (!n.enabled$bool) continue;
 t = {};
@@ -5112,7 +4873,7 @@ for (var r = 0; r < 7; r++) {
 var s = n[r], a = [];
 if (s.enabled$bool && s.periods) {
 var c = s.periods;
-for (var u in c) c.hasOwnProperty(u) && a.push({
+for (var u in c) Object.prototype.hasOwnProperty.call(c, u) && a.push({
 start: c[u].start$int,
 end: c[u].end$int
 });
@@ -5123,15 +4884,15 @@ Object.keys(t).length && (i[o] = t);
 }
 return i;
 }
-function ve(e, t) {
-for (var n in e) if (e.hasOwnProperty(n)) {
--1 !== t.indexOf(n) && (e[n] = oe(e[n], function(e) {
+function ye(e, t) {
+for (var n in e) if (Object.prototype.hasOwnProperty.call(e, n)) {
+-1 !== t.indexOf(n) && (e[n] = re(e[n], function(e) {
 return e;
 }));
-"object" == typeof e[n] && ve(e[n], t);
+"object" == typeof e[n] && ye(e[n], t);
 }
 }
-function ye(e) {
+function we(e) {
 if (e.length <= 1) return e;
 var t = [];
 e.forEach(function(e) {
@@ -5156,71 +4917,73 @@ t = void 0;
 return n;
 }(t);
 }
-var we, be, $e, Ee, Te, ke, Ae = n(3), Le = n(5), Oe = n(0), xe = n(15), Se = n(1), De = n(14), Re = n(2), Ce = n(25), Ie = n(50), Ne = n(13), Pe = n(24), Me = n(4), Ue = n(49), Ve = n(6), je = n(18), ze = n(45), qe = n(44), Ke = n(43), Fe = n(31), He = n(29), Ge = n(16), Be = n(17), We = n(28), Ye = n(27), Xe = {
-init: o,
-reconnect: c,
-getFirehose: u,
-setVisitorInfo: h,
-getVisitorInfo: l,
-setVisitorDefaultDepartment: y,
-getVisitorDefaultDepartment: v,
-getAllDepartments: _,
-getDepartment: m,
-clearVisitorDefaultDepartment: w,
-addTag: b,
-removeTag: $,
+var be, $e, Ee, ke, Te, Oe, Le = n(2), xe = n(4), Ae = n(0), Ie = n(22), Re = n(1), Ce = n(12), Se = n(5), De = n(48), Ne = n(47), Pe = n(21), Me = n(20), Ve = n(3), je = n(45), Ue = n(6), qe = n(15), ze = n(41), Ke = n(40), Fe = n(39), We = n(29), He = n(26), Be = n(13), Ge = n(14), Ye = n(25), Xe = n(24), Ze = {
+init: r,
+reconnect: u,
+getFirehose: l,
+setVisitorInfo: f,
+getVisitorInfo: d,
+setVisitorDefaultDepartment: w,
+getVisitorDefaultDepartment: y,
+getAllDepartments: v,
+getDepartment: g,
+clearVisitorDefaultDepartment: b,
+addTag: $,
+removeTag: E,
 addTags: T,
-removeTags: k,
-sendChatMsg: d,
-sendFile: f,
-sendVisitorPath: L,
-sendChatComment: S,
-sendChatRating: x,
-getChatInfo: O,
-endChat: D,
-isChatting: R,
-getServingAgentsInfo: C,
-sendOfflineMsg: P,
-sendTyping: Pe.debounceExceptFirst(M, 300),
-sendEmailTranscript: U,
+removeTags: O,
+sendChatMsg: h,
+sendFile: p,
+sendVisitorPath: x,
+sendChatComment: R,
+sendChatRating: I,
+getChatInfo: A,
+endChat: C,
+isChatting: S,
+getServingAgentsInfo: D,
+sendOfflineMsg: M,
+sendTyping: Me.debounceExceptFirst(V, 300),
+sendEmailTranscript: j,
 getChatLog: H,
-getConnectionStatus: G,
-getAccountStatus: B,
-getOperatingHours: N,
-getQueuePosition: W,
-fetchChatHistory: Y,
-markAsRead: Pe.throttle(X, 2e3),
+getConnectionStatus: B,
+getAccountStatus: G,
+getOperatingHours: P,
+getQueuePosition: Y,
+fetchChatHistory: X,
+markAsRead: Me.throttle(Z, 2e3),
 logout: i,
-EMAIL_REGEX: Ne.email
-}, Ze = Oe.extend(Xe), Je = !1, Qe = Oe.extend({}), et = "web_sdk", tt = function() {}, nt = je, it = /[0-9]+/, ot = /^(https?|ftps?):\/\//i, rt = /\S/, st = nt.any([ nt.equal(""), nt.type("string").regex(it).maxLength(25) ]), at = nt.any([ nt.equal(void 0), nt.type("function") ]), ct = nt.predicate(function(e) {
+EMAIL_REGEX: Pe.email
+}, Qe = Ae.extend(Ze), Je = !1, et = Ae.extend({}), tt = "web_sdk", nt = function() {}, it = qe, ot = /[0-9]+/, rt = /^(https?|ftps?):\/\//i, st = /\S/, at = it.any([ it.equal(""), it.type("string").regex(ot).maxLength(25) ]), ct = it.any([ it.equal(void 0), it.type("function") ]), ut = it.predicate(function(e) {
 return -1 === e.indexOf(",");
-}, "not contain any comma character"), ut = {
+}, "not contain any comma character"), lt = it.predicate(function(e) {
+return "object" == typeof e.document && !!e.document && "object" == typeof e.navigator && !!e.navigator && "object" == typeof e.location && !!e.location;
+}, "be a valid window object"), dt = {
 interval: 6e5,
 limit: 10,
 callback: function() {
-ue(new Error("Call has been ratelimted"), "reconnect");
+le(new Error("Call has been ratelimted"), "reconnect");
 }
-}, lt = ze.rateLimit(a, ut), ht = [ "email$string", "phone$string", "display_name$string" ], dt = {
+}, ft = ze.rateLimit(c, dt), ht = [ "email$string", "phone$string", "display_name$string" ], pt = {
 connected: "connected",
 connecting: "connecting",
 closed: "closed"
-}, ft = {
+}, mt = {
 online: "online",
 offline: "offline",
 away: "away",
 invalid_account_key: null,
 banned: null
-}, pt = ne(dt), mt = ne(ft), gt = Z(ht), _t = Z([ "name$string", "status$string" ], "id", V), vt = Z([ "avatar_path$string", "display_name$string", "title$string" ], "nick"), yt = Z([ "typing$bool" ], "nick", j), wt = Z([ "typing$bool" ], "display_name", z), bt = Z([ "timestamp$int" ], null, F), $t = Z([ "timestamp$int" ], "nick", q), Et = (Z([ "banner", "behavior", "branding", "bubble", "chat_button", "chat_window", "concierge", "file_sending", "forms", "greetings", "language", "login", "rating", "sound", "theme", "timezone$string" ]), 
+}, gt = ie(pt), _t = ie(mt), vt = Q(ht), yt = Q([ "name$string", "status$string" ], "id", U), wt = Q([ "avatar_path$string", "display_name$string", "title$string" ], "nick"), bt = Q([ "typing$bool" ], "nick", q), $t = Q([ "typing$bool" ], "display_name", z), Et = Q([ "timestamp$int" ], null, W), kt = Q([ "timestamp$int" ], "nick", K), Tt = (Q([ "banner", "behavior", "branding", "bubble", "chat_button", "chat_window", "concierge", "file_sending", "forms", "greetings", "language", "login", "rating", "sound", "theme", "timezone$string" ]), 
 [ "on", "un", "fire", "unextendEvents", "init", "getFirehose", "getConnectionStatus" ]);
-for (var Tt in Ze) Ze.hasOwnProperty(Tt) && -1 === Et.indexOf(Tt) && Re(Ze[Tt]) && (Ze[Tt] = function(e, t) {
+for (var Ot in Qe) Object.prototype.hasOwnProperty.call(Qe, Ot) && -1 === Tt.indexOf(Ot) && Se(Qe[Ot]) && (Qe[Ot] = function(e, t) {
 return function() {
 if (!1 !== Je) return t.apply(null, arguments);
-ue(new Error("Web SDK is not initialized yet. Please ensure that you call zChat.init() and wait for the connection to be established before calling this method"), e);
+le(new Error("Web SDK is not initialized yet. Please ensure that you call zChat.init() and wait for the connection to be established before calling this method"), e);
 };
-}(Tt, Ze[Tt]));
-e.exports = Ze;
+}(Ot, Qe[Ot]));
+e.exports = Qe;
 }, function(e, t, n) {
-var i = n(51), o = i;
+var i = n(49), o = i;
 e.exports = o;
 } ]);
 });
