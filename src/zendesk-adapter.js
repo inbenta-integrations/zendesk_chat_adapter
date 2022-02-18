@@ -11,7 +11,9 @@ var inbentaZendeskAdapter = function(zendeskConf, zChat) {
       accountKey: '',
       labels: {
         placeholder: 'We are processing your request, sooner you will be redirected to Zendesk chat.',
-        defaultInitialUQZendesk: 'Hello'
+        defaultInitialUQZendesk: 'Hello',
+        ticketCreationSuccess: 'Your ticket was created, we will contact you as soon as possible',
+        ticketCreationError: 'An error occurred, try again later'
       },
       launcherDivSelector: '.inbenta-bot__launcher'
     }
@@ -68,16 +70,21 @@ var inbentaZendeskAdapter = function(zendeskConf, zChat) {
      */
     chatbot.subscriptions.onDisplayChatbotMessage(function(messageData, next) {
       //Detect escalationOffer content
-      if("attributes" in messageData && messageData.attributes !== null && 'DIRECT_CALL' in messageData.attributes && messageData.attributes.DIRECT_CALL==="escalationOffer"){
+      if (validateEscalationOffer(messageData)) {
         checkAgentsZendesk(false);
-      //Remove end-form direct-answer on escalationStart, but don't interrupt the action, so js_callback is executed
-      }else if('flags' in messageData && messageData.flags.length > 0 && 'actions' in messageData && messageData.actions.length > 0){
-        if(messageData.flags.indexOf('end-form')!==-1){
-          for (var i = 0; i < messageData.actions.length; i++) {
-            if('parameters' in messageData.actions[i] && 'callback' in messageData.actions[i].parameters && messageData.actions[i].parameters.callback == "escalationStart"){
-              messageData.message = '';
-              messageData.messageList = [];
-            }
+      //Remove end-form direct-answer on "escalationStart" or "createTicket", but don't interrupt the action, so js_callback is executed
+      } else if (validateFlagsAndActions(messageData)) {
+        for (let i = 0; i < messageData.actions.length; i++) {
+
+          if (!("parameters" in messageData.actions[i])) continue;
+          if (!("callback" in messageData.actions[i].parameters)) continue;
+
+          if (messageData.actions[i].parameters.callback == "createTicket") {
+            let data = messageData.actions[i].parameters.data;
+            createTicket(data);
+          } else if (messageData.actions[i].parameters.callback == "escalationStart") {
+            messageData.message = "";
+            messageData.messageList = [];
           }
         }
       }
@@ -90,16 +97,49 @@ var inbentaZendeskAdapter = function(zendeskConf, zChat) {
     });
 
     /**
+     * Validate if message from chatbot has a directCall with "escalationOffer"
+     * @param {object} messageData 
+     * @returns 
+     */
+    function validateEscalationOffer(messageData) {
+        return "attributes" in messageData 
+            && messageData.attributes !== null 
+            && "DIRECT_CALL" in messageData.attributes 
+            && messageData.attributes.DIRECT_CALL === "escalationOffer"
+    }
+
+    /**
+     * Check if message from chatbot has "flags" and "actions" object in the response and "end-form" in flags
+     * @param {object} messageData 
+     * @returns 
+     */
+    function validateFlagsAndActions(messageData) {
+        return "flags" in messageData 
+            && "actions" in messageData 
+            && messageData.flags.length > 0 
+            && messageData.actions.length > 0
+            && messageData.flags.indexOf("end-form") !== -1
+    }
+
+    /**
      * Check the status of the selected department, storing the value in variable
      */
     function checkAgentsZendesk(sendStart) {
-      var status;
-      if (zendeskConf.department.length > 0) {
-        var departmentInfo = window.$zopim.livechat.departments.getDepartment(zendeskConf.department) || {};
-        if (departmentInfo) window.$zopim.livechat.departments.setVisitorDepartment(departmentInfo.name);
-        status = departmentInfo.status === 'online' || departmentInfo.status === 'away' ? 'TRUE' : 'FALSE';
-      } else {
-        status = 'TRUE';
+      var status = 'TRUE';
+      var departmentsInfo = window.$zopim.livechat.departments.getAllDepartments() || {};
+      if (departmentsInfo && departmentsInfo.length > 0) {
+        status = 'FALSE';
+        departmentsInfo.some(function (element) {
+          if (zendeskConf.department.length > 0) {
+            if (zendeskConf.department === element.name) {
+              status = element.status === 'online' || element.status === 'away' ? 'TRUE' : 'FALSE';
+              return true;
+            }
+          } else if (element.status === 'online' || element.status === 'away') {
+            status = 'TRUE';
+            return true;
+          }
+        });
       }
       chatbot.api.addVariable('agents_available', status).then(function() {
         if (sendStart && localStorage.getItem('inb-escalation-start') == 'false') {
@@ -135,7 +175,7 @@ var inbentaZendeskAdapter = function(zendeskConf, zChat) {
         }
       }, 300);
     }
-    
+
     function launcherIsShown(launcher) {
       if (launcher.getAttribute("style") && launcher.getAttribute("style").indexOf("display:none") > -1) {
         return false;
@@ -149,13 +189,13 @@ var inbentaZendeskAdapter = function(zendeskConf, zChat) {
         if (event_data === 'offline') chatbot.api.track('CHAT_NO_AGENTS', { value: true });
         localStorage.setItem('zendesk-account-status', event_data);
       });
-      
+
       zChat.on('agent_update', function(event_data) {
         if (event_data.display_name !== undefined && !transcriptFileSent) {
           if (defaultZendeskConf.sendTranscript) sendChatTranscript();
         }
       });
-      
+
       window.zE('webWidget:on', 'close', function() {
         var status = localStorage.getItem('zendesk-account-status');
         if (status === 'offline') {
@@ -165,7 +205,7 @@ var inbentaZendeskAdapter = function(zendeskConf, zChat) {
           chatbot.actions.showConversationWindow();
         } 
       });
-      
+
       window.zE('webWidget:on', 'chat:start', function() {
         chatbot.api.track('CHAT_ATTENDED', { value: true });
       });
@@ -179,23 +219,31 @@ var inbentaZendeskAdapter = function(zendeskConf, zChat) {
     }
 
     function prepareInfoVisitor(data) {
-      var conversation = chatbot.actions.getConversationTranscript();
       var params = {
-        email: (data.data.email_address) ? data.data.email_address.value : '',
-        first_name: (data.data.first_name)? data.data.first_name.value : '',
-        last_name: (data.data.last_name) ? data.data.last_name.value : '',
-        inquiry: (data.data.inquiry)? data.data.inquiry.value : ''
-      }
+        email: data.data.email_address ? data.data.email_address.value : '',
+        first_name: data.data.first_name ? data.data.first_name.value : '',
+        last_name: data.data.last_name ? data.data.last_name.value : '',
+        inquiry: data.data.inquiry ? data.data.inquiry.value : ''
+      };
       params.display_name = params.first_name + ' ' + params.last_name;
 
-      let transcriptText = '';
-      let user = '';
-      conversation.forEach(function(element) {
-        user = element.user == 'guest' ? 'User' : 'Bot';
-        transcriptText += user + ': ' +element.message + '\r\n';
-      });
+      var transcriptText = getTranscript();
       transcriptFile = new File([transcriptText], 'chatTranscript.txt', { type: 'text/plain' });
       return params;
+    }
+
+    function getTranscript(html) {
+      var conversation = chatbot.actions.getConversationTranscript();
+      var transcriptText = "";
+      var user = "";
+      conversation.forEach(function (element) {
+        user = element.user == "guest" ? "User" : "Bot";
+        if (html) {
+          user = "<b>" + user + "</b>";
+        }
+        transcriptText += user + ": " + element.message + "\r\n";
+      });
+      return transcriptText;
     }
 
     /**
@@ -232,7 +280,7 @@ var inbentaZendeskAdapter = function(zendeskConf, zChat) {
       if (!defaultZendeskConf.preForm){
         window.zE('webWidget', 'chat:send', params.inquiry || defaultZendeskConf.labels.defaultInitialUQZendesk);
       }
-      
+
       addListeners();
       eventsLoaded = true;
       modifyInbentaLauncher();
@@ -273,5 +321,70 @@ var inbentaZendeskAdapter = function(zendeskConf, zChat) {
         }
       });
     }
+
+    /**
+     * Create the payload for a Zendesk ticket
+     * @param {Object} data
+     */
+    function createTicket(data) {
+      data.LAST_NAME = data.LAST_NAME === null ? "" : data.LAST_NAME;
+      var name = data.FIRST_NAME + " " + data.LAST_NAME;
+      var subject = data.INQUIRY === null ? "Request from: " + name : data.INQUIRY;
+      var transcript = getTranscript(true);
+      var payload = {
+        request: {
+          subject: subject,
+          tags: ["web_widget"],
+          comment: {
+            html_body: transcript,
+            uploads: [],
+          },
+          requester: {
+            name: name,
+            email: data.EMAIL,
+          },
+          ticket_form_id: null,
+          fields: {},
+          priority: "normal",
+        }
+      };
+      createTicketSendData(payload);
+    }
+
+    /**
+     * Send the payload for Zendesk ticket creation
+     * @param {Object} payload
+     */
+    function createTicketSendData(payload) {
+      if (defaultZendeskConf.subdomain !== '') {
+        var url = "https://" + defaultZendeskConf.subdomain + ".zendesk.com/api/v2/requests.json";
+        fetch(url, {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => res.json())
+        .catch((error) => {
+          console.error("Error:", error);
+          var chatBotmessageData = {
+            type: "answer",
+            message: defaultZendeskConf.labels.ticketCreationError,
+          };
+          chatbot.actions.displayChatbotMessage(chatBotmessageData);
+        })
+        .then((response) => {
+          if (response) {
+            var chatBotmessageData = {
+              type: "answer",
+              message: defaultZendeskConf.labels.ticketCreationSuccess,
+            };
+            chatbot.actions.displayChatbotMessage(chatBotmessageData);
+          }
+        });
+      }
+    }
+
   } // return chatbot
 } // export default
